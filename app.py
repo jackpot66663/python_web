@@ -11,3 +11,8 @@ def home():
 @app.route("/hello")
 def hello():
     return render_template('hello.html')
+
+
+@app.route("/game")
+def game():
+    return 'game'
