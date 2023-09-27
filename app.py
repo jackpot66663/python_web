@@ -1,4 +1,5 @@
 from utils import file_controller
+from dao import user_dao
 from flask import Flask, render_template, request, redirect, url_for, session
 
 
@@ -30,5 +31,10 @@ def login():
 def problem_library():
     if request.method == 'POST':
         username = request.form['username']
-        file_controller.creste_user_file(username)
+        user_dao.user_info['id'] = username
+        if file_controller.check_file_exist(username):
+            user_dao.user_info['first_login'] = 1
+        else:
+            file_controller.creste_user_file(user_dao.user_info)
+
         return render_template('problem_library.html', username=username)
