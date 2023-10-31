@@ -1,10 +1,24 @@
 from utils import file_controller
 from dao import user_dao
 from flask import Flask, render_template, request, redirect, url_for, session
+import pandas as pd
+import os
+from fileinput import filename
+from werkzeug.utils import secure_filename
+
+
+UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
+ 
+# Define allowed files
+ALLOWED_EXTENSIONS = {'csv'}
 
 
 app = Flask(__name__)
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.secret_key = 'jackpot6666'
 
+if __name__ == "__main__":
+    app.run()
 
 # app.secret_key = ''
 
@@ -27,14 +41,42 @@ def login():
     return render_template('index.html')
 
 
-@app.route("/problem_library", methods=['GET', 'POST'])
-def problem_library():
+@app.route("/welcome_user", methods=['GET', 'POST'])
+def welcome():
     if request.method == 'POST':
         username = request.form['username']
         user_dao.user_info['id'] = username
         if file_controller.check_file_exist(username):
+        
             user_dao.user_info['first_login'] = 1
         else:
             file_controller.creste_user_file(user_dao.user_info)
+            print(123)
+    return render_template('welcome_user.html', username=username)
 
-        return render_template('problem_library.html', username=username)
+@app.route("/db_import",methods=['GET', 'POST'])
+def import_csv():
+    if request.method == 'POST':
+        f = request.files.get('file')
+            # Extracting uploaded file name
+        data_filename = secure_filename(f.filename)
+
+        f.save(os.path.join(app.config['UPLOAD_FOLDER'],data_filename))
+
+        session['uploaded_data_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'],data_filename)
+
+        return render_template('db_import_s.html')
+    return render_template('db_import.html')
+
+
+@app.route("/show_csv")
+def showData():
+    # Uploaded File Path
+    data_file_path = session.get('uploaded_data_file_path', None)
+    # read csv
+    uploaded_df = pd.read_csv(data_file_path,
+                              encoding='unicode_escape')
+    # Converting to html Table
+    uploaded_df_html = uploaded_df.to_html()
+    return render_template('show_csv.html',
+                           data_var=uploaded_df_html)

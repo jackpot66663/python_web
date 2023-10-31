@@ -5,7 +5,7 @@ import os
 
 def check_file_exist(username):
     exist = False
-    dir_path = r'C:\Users\Jackpot\Documents\python_web\user_log'
+    dir_path = r'C:\Users\Jackpot\graduate_paper\python_web\user_log'
     filename = str(username)+'.txt'
     for path in os.listdir(dir_path):
         print(os.path.basename(path))
