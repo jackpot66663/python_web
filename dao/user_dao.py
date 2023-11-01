@@ -1,5 +1,6 @@
 user_info = {
     "id": "",
-    "first_login": 0,
+    "first_login": True,
     "create_time": "",
+    "uploads":False,
 }

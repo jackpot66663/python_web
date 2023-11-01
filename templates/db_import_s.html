@@ -1,9 +1,20 @@
+<form method = "POST" enctype="multipart/form-data" action = "/">    
+    <input type="file" name="file" accept=".csv">
+    <input type = "submit" value="Upload">  
+</form>
+<p style="color:green;"> File uploaded successfully!! </p>
+<!-- <form action="{{ url_for('showData') }}" target="_blank">
+    <input type="submit" value="Show CSV" onclick="show()">
+</form> -->
+<input type="submit" value="Show CSV" onclick="show_data()">
+<div id="problem_data" hidden>
+    {% include 'show_csv.html' %}
+</div>
 
-    <form method = "POST" enctype="multipart/form-data" action = "/">    
-        <input type="file" name="file" accept=".csv">
-        <input type = "submit" value="Upload">  
-    </form>
-    <p style="color:green;"> File uploaded successfully!! </p>
-    <form action="/show_data" target="_blank">
-        <input type="submit" value="Show CSV"/>
-    </form>
+<script>
+    function show_data(){
+        
+
+        document.getElementById('problem_data').hidden = false;
+    }
+</script>

@@ -6,16 +6,20 @@
     </head>
     <body>
         <div>
-            {% if first_login==0 %}
+            {% if user.first_login %}
             <h1>
-                Welcome,{{username}}!
+                Welcome,{{user.id}}!
             </h1>
             {% else %}
             <h1>
-                Welcome Back,{{username}}!
+                Welcome Back,{{user.id}}!
             </h1>
             {% endif %}
         </div>
-        {% include 'db_import.html' %}
+        {% if user.uploads%}
+            {% include 'db_import_s.html' %}
+        {% else %}
+            {% include 'db_import.html' %}
+        {%endif%}
     </body>
 </html>
