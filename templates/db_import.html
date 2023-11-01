@@ -2,12 +2,11 @@
     <input type="file" name="file" accept=".csv">
     <input type = "submit" value="Upload">  
 </form>
-{% if upload%}
+
+{% if data_var %}
     <p style="color:green;"> File uploaded successfully!! </p>
-    <form action="{{ url_for('showData') }}" target="_blank">
-        <input type="submit" value="Show CSV">
-    </form>
+    {{data_var|safe}}
 {% else %}
     <p style="color:blue;">Choose csv file to upload</p>
-{%endif%}
+{% endif %}
 

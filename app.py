@@ -56,23 +56,21 @@ def welcome():
 @app.route("/db_import",methods=['GET', 'POST'])
 def import_csv():
     if request.method == 'POST':
+        print(user_dao.user_info['id'])
         f = request.files.get('file')
         data_filename = secure_filename(f.filename)
 
         f.save(os.path.join(app.config['UPLOAD_FOLDER'],data_filename))
 
         session['uploaded_data_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'],data_filename)
-        user_dao.user_info['uploads'] = True
         
-    return redirect(url_for('welcome'))
-
-
-@app.route("/show_csv")
-def showData():
-    # Uploaded File Path
-    data_file_path = session.get('uploaded_data_file_path', None)
-    # read csv
-    uploaded_df = pd.read_csv(data_file_path,encoding='utf-8')
-    # Converting to html Table
-    uploaded_df_html = uploaded_df.to_html()
-    return redirect(url_for('welcome'))           #data_var=uploaded_df_html
+        user_dao.user_info['uploads'] = True
+        # Uploaded File Path
+        data_file_path = session.get('uploaded_data_file_path', None)
+        # read csv
+        uploaded_df = pd.read_csv(data_file_path,encoding='utf-8')
+        # Converting to html Table
+        uploaded_df_html = uploaded_df.to_html()
+        return render_template('db_import.html',user=user_dao.user_info,data_var=uploaded_df_html)
+    return render_template('db_import.html',user=user_dao.user_info)
+             
