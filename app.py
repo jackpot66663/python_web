@@ -5,6 +5,7 @@ import pandas as pd
 import os
 from fileinput import filename
 from werkzeug.utils import secure_filename
+import numpy as np
 
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
@@ -17,18 +18,7 @@ app = Flask(__name__)
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.secret_key = 'jackpot6666'
 
-if __name__ == "__main__":
-    app.run()
 
-# app.secret_key = ''
-
-# app.config['MYSQL_HOST'] = 'localhost'
-# app.config['MYSQL_USER'] = 'root'
-# app.config['MYSQL_PASSWORD'] = '610520Jjkk++'
-# app.config['MYSQL_DB'] = 'pythonlogin'
-
-# Intialize MySQL
-# mysql = MySQL(app)
 
 
 @app.route('/')
@@ -73,4 +63,19 @@ def import_csv():
         uploaded_df_html = uploaded_df.to_html()
         return render_template('db_import.html',user=user_dao.user_info,data_var=uploaded_df_html)
     return render_template('db_import.html',user=user_dao.user_info)
+
+@app.route("/prompt_build",methods=['GET', 'POST'])
+def prompt_build():
+    cols = ['Category','Keywords','Problem_Description','Solution']
+    df = pd.read_csv(session['uploaded_data_file_path'],encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str})
+    # for index,row in df.iterrows():
+    #     problem_dao.problems_set.append(row)
+    # print(problem_dao.problems_set)
+    df_n = df.to_json(orient='index')
+    
+    return render_template('prompt_build.html',problems=df_n)
+
+
+if __name__ == "__main__":
+    app.run()
              

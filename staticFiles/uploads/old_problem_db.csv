@@ -1,5 +1,5 @@
 ﻿Category,Keywords,Problem_Description,Solution
-algorithm,"[array,sort]",請寫出由小到大排序的Quick Sort演算法,"void swap(int *a, int *b){
+Algorithm,"[array,sort]",請寫出由小到大排序的Quick Sort演算法,"void swap(int *a, int *b){
     int temp = *a;
     *a = *b;
     *b = temp;

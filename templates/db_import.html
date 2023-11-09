@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="{{ url_for('static', filename='db_import.css') }}">
+
 <form method = "POST" enctype="multipart/form-data" action = "{{ url_for('import_csv') }}">    
     <input type="file" name="file" accept=".csv">
     <input type = "submit" value="Upload">  
@@ -6,7 +8,12 @@
 {% if data_var %}
     <p style="color:green;"> File uploaded successfully!! </p>
     {{data_var|safe}}
+    <form method = "POST" action="{{url_for('prompt_build')}}">
+        <input class="button-32" type="submit" value="Get Start">
+    </form>
 {% else %}
     <p style="color:blue;">Choose csv file to upload</p>
 {% endif %}
+
+
 

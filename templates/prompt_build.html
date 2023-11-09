@@ -1,0 +1,35 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='prompt_build.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </head>
+    <body>
+        <div class="main">
+            <div class="flex-child">
+                <h1>Problem</h1>
+                <div class="n_problem">
+                    <p>請寫出一降序的Quick Sort演算法</p>
+                </div>
+            </div>
+
+            <div class="flex-child">
+                <h1>Prompt Production</h1>
+                <hr>
+                <p>選擇問題種類</p>
+                <hr>
+                <p>選擇與問題相關之主題</p>
+                <hr>
+                <p>選擇生成式AI腳色</p>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript">
+   var problems = {{problems|safe}}
+   var categorys = []
+   var keywords =[]
+   $(document).ready(function () {
+        console.log(problems)
+   });
+</script>
