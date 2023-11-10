@@ -6,6 +6,7 @@ import os
 from fileinput import filename
 from werkzeug.utils import secure_filename
 import numpy as np
+import json
 
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
@@ -72,8 +73,17 @@ def prompt_build():
     #     problem_dao.problems_set.append(row)
     # print(problem_dao.problems_set)
     df_n = df.to_json(orient='index')
-    
-    return render_template('prompt_build.html',problems=df_n)
+    problem_dict = json.loads(df_n)
+    categorys = set()
+    keywords = set()
+    for problem in problem_dict:
+        categorys.add(problem_dict[problem]['Category'])
+        t = problem_dict[problem]['Keywords']
+        tarray = t.split(',')
+        for i,keyword in enumerate(tarray):
+            keywords.add(keyword)
+
+    return render_template('prompt_build.html',problems=df_n,categorys = categorys,keywords = keywords)
 
 
 if __name__ == "__main__":

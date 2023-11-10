@@ -15,9 +15,19 @@
             <div class="flex-child">
                 <h1>Prompt Production</h1>
                 <hr>
-                <p>選擇問題種類</p>
+                <div class="c_category">
+                    <p>選擇問題種類</p>
+                    {% for category in categorys %}
+                        {{category}}
+                    {% endfor %}
+                </div>
                 <hr>
-                <p>選擇與問題相關之主題</p>
+                <div class="c_keyword">
+                    <p>選擇與問題相關之主題</p>
+                    {% for keyword in keywords %}
+                        {{keyword}}
+                    {% endfor %}
+                </div>
                 <hr>
                 <p>選擇生成式AI腳色</p>
             </div>
@@ -27,9 +37,9 @@
 
 <script type="text/javascript">
    var problems = {{problems|safe}}
-   var categorys = []
-   var keywords =[]
+   
+   const choice = {Category:"",Keyword:"",Solution:"",Role:""}
    $(document).ready(function () {
-        console.log(problems)
+        
    });
 </script>
