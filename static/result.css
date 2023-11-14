@@ -25,10 +25,7 @@ body{
     align-items: center;
     
 }
-.n_problem{
-    text-align: center;
-    margin-top: 300px;
-}
+
 h1{
     font-size: 30px;
 }
@@ -43,12 +40,12 @@ p{
 
 .button-32 {
     position: relative;
-    margin-top: 30px;  
-    left: 5%;
+    top: 50%;  
+    left: 50%;
     transform: translate(-50%, -50%);
-    background-color: #52BE80;
+    background-color: #0084ff;
     border-radius: 12px;
-    color: #fff;
+    color: #000;
     cursor: pointer;
     font-weight: bold;
     padding: 10px 15px;
@@ -66,7 +63,7 @@ p{
   .button-32:not(:disabled):hover,
   .button-32:not(:disabled):focus {
     outline: 0;
-    background: #000;
+    background: #f1f3f4;
     box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
   }
   

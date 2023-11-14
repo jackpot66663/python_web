@@ -1,6 +1,7 @@
 from utils import file_controller
+from utils import openai_controller
 from dao import user_dao
-from flask import Flask, render_template, request, redirect, url_for, session
+from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 import pandas as pd
 import os
 from fileinput import filename
@@ -84,7 +85,21 @@ def prompt_build():
             keywords.add(keyword)
 
     return render_template('prompt_build.html',problems=df_n,categorys = categorys,keywords = keywords)
-
+ans = ""
+@app.route("/result",methods=['GET', 'POST'])
+def result():
+    
+    if request.method=="POST":
+        data = request.get_json()
+        result = openai_controller.prompt_message(data)
+        global ans 
+        ans = result
+        return jsonify(result)
+    elif request.method == "GET":
+        ans = json.loads(ans)
+        # print(ans)
+        # print(ans['new_solution'])
+        return render_template('result.html',ans = ans)
 
 if __name__ == "__main__":
     app.run()

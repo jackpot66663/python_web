@@ -2,6 +2,7 @@
     <head>
         <link rel="stylesheet" href="{{ url_for('static', filename='prompt_build.css') }}">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     </head>
     <body>
         <div class="main">
@@ -30,6 +31,10 @@
                 </div>
                 <hr>
                 <p>選擇生成式AI腳色</p>
+                <hr>
+                <!-- <form method = "POST" action="{{url_for('result')}}"> -->
+                    <input class="button-32" type="submit" value="Ask AI">
+                <!-- </form> -->
             </div>
         </div>
     </body>
@@ -37,9 +42,37 @@
 
 <script type="text/javascript">
    var problems = {{problems|safe}}
+//    var choice = {Category:"",Keyword:"",Solution:"",Role:""}
+
+   var text = problems[0]['Solution']
+   var temp = text.toString()
    
-   const choice = {Category:"",Keyword:"",Solution:"",Role:""}
+
    $(document).ready(function () {
         
+        choice={
+                Category:"Algorithm",
+                Keyword:"Array,Sort",
+                Problem_n:"請寫出由大到小排序的Quick Sort演算法",
+                Problem_o:"請寫出由小到大排序的Quick Sort演算法",
+                Solution:temp,
+                Role:"Teacher"
+        }
+        // console.log(choice)
+        
+        $('input[type=submit]').click(function(){
+            // console.log(123)
+            $.ajax({
+                type:"POST",
+                url:"/result",
+                data:JSON.stringify(choice),
+                contentType:"application/json",
+                dataType:'json',
+                success:function(result){
+                    window.location.href = "/result"
+                }
+            })
+        });
    });
+
 </script>
