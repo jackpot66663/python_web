@@ -41,37 +41,73 @@ p{
     margin-right: 10px;
 }
 
-.button-32 {
-    position: relative;
-    margin-top: 30px;  
-    left: 5%;
-    transform: translate(-50%, -50%);
-    background-color: #52BE80;
-    border-radius: 12px;
-    color: #fff;
-    cursor: pointer;
-    font-weight: bold;
-    padding: 10px 15px;
-    text-align: center;
-    transition: 200ms;
-    width: 10%;
-    box-sizing: border-box;
-    border: 0;
-    font-size: 16px;
-    user-select: none;
-    -webkit-user-select: none;
-    touch-action: manipulation;
-  }
-  
-  .button-32:not(:disabled):hover,
-  .button-32:not(:disabled):focus {
-    outline: 0;
-    background: #000;
-    box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
-  }
-  
-  .button-32:disabled {
-    filter: saturate(0.2) opacity(0.5);
-    -webkit-filter: saturate(0.2) opacity(0.5);
-    cursor: not-allowed;
-  }
+.button-33 {
+  position: relative;
+  margin-top: 30px;  
+  left: 5%;
+  transform: translate(-50%, -50%);
+  background-color: 	#0066CC;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 10px 15px;
+  text-align: center;
+  transition: 200ms;
+  width: 10%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 16px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-33:not(:disabled):hover,
+.button-33:not(:disabled):focus {
+  outline: 0;
+  background: #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
+}
+
+.button-33:disabled {
+  filter: saturate(0.2) opacity(0.5);
+  -webkit-filter: saturate(0.2) opacity(0.5);
+  cursor: not-allowed;
+}
+
+
+#target-content {
+  position: fixed;
+  transform: translate(-50%, -50%);
+	top: 50%;
+	left: 50%;
+	width: 50%;
+	height: 500px;
+	background-color: #fff;
+	z-index: 999;
+  border: 0.0625rem solid #d3d3d3;
+	box-shadow: 0 0 0.625rem #e5e2e2;
+	border-radius: 0.625rem;
+  overflow:auto;
+  display: none;
+}
+.popup-header {
+	background-color: #fff;
+	padding: 0.625rem;			
+}
+.popup-close {
+	font-size: 12px;
+	font-weight: bold;
+	padding: 0.3125rem 0.625rem;
+	border-radius: 0.3125rem;
+	background-color: #f00;
+	color: #fff;
+	border: none;
+	float: right;
+	margin: -0.3125rem;
+}
+
+#prompt-content{
+  text-align: center;
+}

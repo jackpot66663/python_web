@@ -9,32 +9,58 @@
             <div class="flex-child">
                 <h1>Problem</h1>
                 <div class="n_problem">
-                    <p>請寫出一降序的Quick Sort演算法</p>
+                    <p> </p>
                 </div>
             </div>
 
             <div class="flex-child">
                 <h1>Prompt Production</h1>
-                <hr>
+                
                 <div class="c_category">
-                    <p>選擇問題種類</p>
-                    {% for category in categorys %}
-                        {{category}}
-                    {% endfor %}
+                    <fieldset>
+                        <legend>選擇問題種類</legend>
+                        {% for category in categorys %}
+                            <input type="radio" name="promptc" value="{{category}}"></input>
+                            <label for="{{category}}">{{category}}</label>
+                        {% endfor %}
+                    </fieldset>
                 </div>
-                <hr>
                 <div class="c_keyword">
-                    <p>選擇與問題相關之主題</p>
-                    {% for keyword in keywords %}
-                        {{keyword}}
-                    {% endfor %}
+                    <fieldset>
+                        <legend>選擇問題核心概念</legend>
+                        {% for keyword in keywords %}
+                            <input type="radio" name="promptk" value="{{keyword}}"></input>
+                            <label for="{{keyword}}">{{keyword}}</label>
+                        {% endfor %}
+                    </fieldset>
+                </div>
+                <div class ="c_role">
+                    <fieldset>
+                        <legend>選擇AI角色</legend>
+                        
+                        <input type="radio" name="promptr" value="ta"></input>
+                        <label for="ta">助教</label>
+
+                        <input type="radio" name="promptr" value="te"></input>
+                        <label for="te">老師</label>
+                        
+                    </fieldset>
+                </div>
+                <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search">
+            </div>
+            <div id="target-content">
+                <div class="popup-header">
+                    <span style="font-weight:bold">Check search result: </span>
+                    <button id="btnpopclose" class="popup-close">×</button>
+                </div>
+                <div id="prompt-content">
+                    <p>選擇的種類為:<span id="g"></span></p>
+                    <p>選擇的關鍵字為:<span id="k"></span></p>
+                    <p>選擇的角色:<span id="r"></span></p>
                 </div>
                 <hr>
-                <p>選擇生成式AI腳色</p>
-                <hr>
-                <!-- <form method = "POST" action="{{url_for('result')}}"> -->
-                    <input class="button-32" type="submit" value="Ask AI">
-                <!-- </form> -->
+                <p>相關之範例題目為:</p>
+                <input class="button-33" style="top:50%;left:50%;bottom: 20px;;" type="submit" value="Ask AI">
             </div>
         </div>
     </body>
@@ -42,26 +68,78 @@
 
 <script type="text/javascript">
    var problems = {{problems|safe}}
-//    var choice = {Category:"",Keyword:"",Solution:"",Role:""}
+   var category = ""
+   var keyword = ""
+   var role = ""
+   var description = []
+   var solution = []
 
-   var text = problems[0]['Solution']
-   var temp = text.toString()
+   //測試case用
+//    var p1_o = problems[8]['Problem_Description']
+//    var p2_o = problems[9]['Problem_Description']
+//    var t1_s = problems[8]['Solution']
+//    var t1 = t1_s.toString()
+//    var t2_s = problems[9]['Solution']
+//    var t2 = t2_s.toString()
+//    var text = "Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:\
+//                 1. 接收一個數字N、並利用產生出1~N的ndarray(A1)，例如N為5，便會得到[1 2 3 4]的ndarray。\
+//                 2. 將A1轉成MxK的格式\
+//                 3. 將A1複製(Deep Copy)到A2\
+//                 4. 將A2中所有元素平方\
+//                 5. 將A2轉成1×Row的格式。(如原本是2x2，便需轉換成1x4)\
+//                 輸入 :\
+//                 每個輸入依空格區隔分別依序為: N、M、K。\
+//                 N與矩陣內容相關，M、K與矩陣形狀相關，詳細參考上方題目說明。\
+//                 輸出:\
+//                 輸出為A1和A2兩個矩陣"
    
-
+   
    $(document).ready(function () {
-        
-        choice={
-                Category:"Algorithm",
-                Keyword:"Array,Sort",
-                Problem_n:"請寫出由大到小排序的Quick Sort演算法",
-                Problem_o:"請寫出由小到大排序的Quick Sort演算法",
-                Solution:temp,
-                Role:"Teacher"
+          
+   });
+   $('input[type=radio][name="promptc"]').on('change', function() {
+        category = $(this).val()
+   })
+   $('input[type=radio][name="promptk"]').on('change', function() {
+        keyword = $(this).val()
+   })
+   $('input[type=radio][name="promptr"]').on('change', function() {
+        role = $(this).val()
+   })
+   $('#btnpopclose').click(function(){
+        $('#target-content').hide();
+   })
+   //點選完prompt進行索引
+   $('#search').click(function(){
+        var prompt = {
+            Category:category,
+            Keyword:keyword,
         }
-        // console.log(choice)
+        console.log(prompt)
+
+        //ajax開始
+
+        $('#g').html(category)
+        $('#k').html(keyword)
+        $('#r').html(role)
+
+        $('#target-content').show()
         
-        $('input[type=submit]').click(function(){
-            // console.log(123)
+   })
+   //
+   //將索引產出之舊問題整理
+   
+   //送出
+   $('input[type=submit]').click(function(){
+            var choice={
+                        Category:category,
+                        Keyword:keyword,
+                        Problem_n:"",
+                        Problem_o:"",
+                        Solution:"",
+                        Role:role
+            }
+            console.log(choice)
             $.ajax({
                 type:"POST",
                 url:"/result",
@@ -72,7 +150,6 @@
                     window.location.href = "/result"
                 }
             })
-        });
-   });
+    });
 
 </script>

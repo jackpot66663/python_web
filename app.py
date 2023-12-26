@@ -94,6 +94,7 @@ def result():
         result = openai_controller.prompt_message(data)
         global ans 
         ans = result
+        print(result)
         return jsonify(result)
     elif request.method == "GET":
         ans = json.loads(ans)
