@@ -1,5 +1,6 @@
 from utils import file_controller
 from utils import openai_controller
+from utils import excel_controller
 from dao import user_dao
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 import pandas as pd
@@ -88,7 +89,6 @@ def prompt_build():
 ans = ""
 @app.route("/result",methods=['GET', 'POST'])
 def result():
-    
     if request.method=="POST":
         data = request.get_json()
         result = openai_controller.prompt_message(data)
@@ -101,6 +101,17 @@ def result():
         # print(ans)
         # print(ans['new_solution'])
         return render_template('result.html',ans = ans)
+    
+
+@app.route("/search",methods=['GET', 'POST'])
+def search():
+    if request.method=="POST":
+        data = request.get_json()
+        # print(data)
+        search = excel_controller.excel_search(data)
+        print(search)
+        return jsonify(search)
+
 
 if __name__ == "__main__":
     app.run()

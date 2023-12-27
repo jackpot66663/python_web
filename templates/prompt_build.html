@@ -115,15 +115,22 @@
             Category:category,
             Keyword:keyword,
         }
-        console.log(prompt)
+        // console.log(prompt)
 
         //ajax開始
-
-        $('#g').html(category)
-        $('#k').html(keyword)
-        $('#r').html(role)
-
-        $('#target-content').show()
+        $.ajax({
+                type:"POST",
+                url:"/search",
+                data:JSON.stringify(prompt),
+                contentType:"application/json",
+                dataType:'json',
+                success:function(result){
+                    $('#g').html(category)
+                    $('#k').html(keyword)
+                    $('#r').html(role)
+                    $('#target-content').show()
+                }
+        })
         
    })
    //

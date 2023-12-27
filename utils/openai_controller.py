@@ -22,7 +22,7 @@ def prompt_message(data):
     user_message['new_question'] = data['Problem_n']
     user_message['old_question'] = data['Problem_o']
     user_message['old_question_solution'] = data['Solution']
-    print(user_message)
+    # print(user_message)
     messages =  [  
         {'role':'system', 
         'content': system_message},    

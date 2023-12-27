@@ -20,3 +20,4 @@ def creste_user_file(user):
     with open('user_log/'f'{username}.txt', 'w') as f:
         query = json.dumps(user)
         f.write(query)
+
