@@ -8,7 +8,7 @@ def check_file_exist(username):
     dir_path = r'C:\Users\Jackpot\graduate_paper\python_web\user_log'
     filename = str(username)+'.txt'
     for path in os.listdir(dir_path):
-        print(os.path.basename(path))
+        # print(os.path.basename(path))
         if os.path.basename(path) == filename:
             exist = True
     return exist

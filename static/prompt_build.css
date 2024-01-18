@@ -111,3 +111,7 @@ p{
 #prompt-content{
   text-align: center;
 }
+
+.old{
+  display: block;
+}

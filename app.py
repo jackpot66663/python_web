@@ -49,7 +49,7 @@ def welcome():
 @app.route("/db_import",methods=['GET', 'POST'])
 def import_csv():
     if request.method == 'POST':
-        print(user_dao.user_info['id'])
+        # print(user_dao.user_info['id'])
         f = request.files.get('file')
         data_filename = secure_filename(f.filename)
 
@@ -107,11 +107,13 @@ def result():
 def search():
     if request.method=="POST":
         data = request.get_json()
-        # print(data)
         search = excel_controller.excel_search(data)
-        print(search)
         return jsonify(search)
 
+@app.route("/next",methods=['GET', 'POST'])
+def next():
+    if request.method=="GET":
+        return render_template('next.html',)
 
 if __name__ == "__main__":
     app.run()

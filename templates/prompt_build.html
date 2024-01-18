@@ -9,7 +9,7 @@
             <div class="flex-child">
                 <h1>Problem</h1>
                 <div class="n_problem">
-                    <p> </p>
+                    <p id="problem_d"></p>
                 </div>
             </div>
 
@@ -60,6 +60,11 @@
                 </div>
                 <hr>
                 <p>相關之範例題目為:</p>
+
+                <div id="old">
+                    
+                 </div>
+
                 <input class="button-33" style="top:50%;left:50%;bottom: 20px;;" type="submit" value="Ask AI">
             </div>
         </div>
@@ -81,21 +86,11 @@
 //    var t1 = t1_s.toString()
 //    var t2_s = problems[9]['Solution']
 //    var t2 = t2_s.toString()
-//    var text = "Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:\
-//                 1. 接收一個數字N、並利用產生出1~N的ndarray(A1)，例如N為5，便會得到[1 2 3 4]的ndarray。\
-//                 2. 將A1轉成MxK的格式\
-//                 3. 將A1複製(Deep Copy)到A2\
-//                 4. 將A2中所有元素平方\
-//                 5. 將A2轉成1×Row的格式。(如原本是2x2，便需轉換成1x4)\
-//                 輸入 :\
-//                 每個輸入依空格區隔分別依序為: N、M、K。\
-//                 N與矩陣內容相關，M、K與矩陣形狀相關，詳細參考上方題目說明。\
-//                 輸出:\
-//                 輸出為A1和A2兩個矩陣"
-   
+   var text = "Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:\n1. 接收一個數字N、並利用產生出1~N的ndarray(A1)，例如N為5，便會得到[1 2 3 4]的ndarray。\n2. 將A1轉成MxK的格式\n3. 將A1複製(Deep Copy)到A2\n4. 將A2中所有元素平方\n5. 將A2轉成1×Row的格式。(如原本是2x2，便需轉換成1x4)\n輸入 :\n每個輸入依空格區隔分別依序為: N、M、K。\nN與矩陣內容相關，M、K與矩陣形狀相關，詳細參考上方題目說明。\n輸出:\n輸出為A1和A2兩個矩陣"
+    text = text.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
-          
+        document.getElementById("problem_d").innerHTML = text
    });
    $('input[type=radio][name="promptc"]').on('change', function() {
         category = $(this).val()
@@ -128,6 +123,22 @@
                     $('#g').html(category)
                     $('#k').html(keyword)
                     $('#r').html(role)
+                    // console.log(result)
+                    var display = ""
+                    result.forEach(element => {
+                        // console.log(element)
+                        var t1 = element[2]
+                        t1 = t1.replace(/\n/g,'<br>')
+                        description += element[2]
+                        var t2 = element[3]
+                        t2 = t2.replace(/\n/g,'<br>')
+                        solution += element[3]
+                        display+=t1+"<br>"
+                        console.log(display)
+                        display+=t2+"<hr>"
+                        
+                    });
+                    $('#old').html(display)
                     $('#target-content').show()
                 }
         })
@@ -141,9 +152,9 @@
             var choice={
                         Category:category,
                         Keyword:keyword,
-                        Problem_n:"",
-                        Problem_o:"",
-                        Solution:"",
+                        Problem_n:text.toString(),
+                        Problem_o:description,
+                        Solution:solution,
                         Role:role
             }
             console.log(choice)
