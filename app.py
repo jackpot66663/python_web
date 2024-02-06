@@ -67,6 +67,7 @@ def import_csv():
         return render_template('db_import.html',user=user_dao.user_info,data_var=uploaded_df_html)
     return render_template('db_import.html',user=user_dao.user_info)
 
+
 @app.route("/prompt_build",methods=['GET', 'POST'])
 def prompt_build():
     cols = ['Category','Keywords','Problem_Description','Solution']
@@ -86,6 +87,7 @@ def prompt_build():
             keywords.add(keyword)
 
     return render_template('prompt_build.html',problems=df_n,categorys = categorys,keywords = keywords)
+
 ans = ""
 @app.route("/result",methods=['GET', 'POST'])
 def result():
@@ -94,7 +96,7 @@ def result():
         result = openai_controller.prompt_message(data)
         global ans 
         ans = result
-        print(result)
+        # print(result)
         return jsonify(result)
     elif request.method == "GET":
         ans = json.loads(ans)
@@ -107,13 +109,36 @@ def result():
 def search():
     if request.method=="POST":
         data = request.get_json()
+        global k
+        global c
+        c=data['Category']
+        k=data['Keyword']
         search = excel_controller.excel_search(data)
         return jsonify(search)
 
+
 @app.route("/next",methods=['GET', 'POST'])
 def next():
-    if request.method=="GET":
-        return render_template('next.html',)
+    generate_set=""
+    if request.method=="POST":
+        
+        data = request.get_json()
+        data['Category'] = c
+        data['Keywords'] = k
+        
+        excel_controller.excel_write(data)
+        #要gpt生成新題目
+        indexing = {
+            "Category":c,
+            "Keyword":k,
+        }
+        search = excel_controller.excel_search(indexing)
+        # print(search)
+        generate_set = openai_controller.prompt_message_test(search)
+        return jsonify(generate_set)
+    elif request.method == "GET":
+        
+        return render_template('next.html')
 
 if __name__ == "__main__":
     app.run()

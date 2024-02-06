@@ -17,7 +17,7 @@
                         a3 = a1.dot(a2)<br>
                         print(a3)</p>
                 </div>
-                <a href="{{url_for('next')}}" onclick="push_to_excel()">Next Level</a>
+                <input class="button-32" value="Next" onclick="push_to_excel()">
             </div>
 
             <div class="flex-child">
@@ -46,7 +46,35 @@
     $(document).ready(function () {
         document.getElementById("problem_d").innerHTML = text
    });
+   //
+   var solution = "from numpy import arange\n\
+import numpy as np\n\
+para = list(map(int, input().split()))\n\
+a1 = arange(1, para[0])\n\
+a1 = a1.reshape(para[1], para[2])\n\
+a2 = np.copy(a1)\n\
+a2 = np.square(a2)\n\
+print(a1)\n\
+print(a2)"
+    //
    function push_to_excel(){
-        
+        // console.log(123)
+        new_set = {
+            Category:"",
+            Keywords:"",
+            Problem_Description:text,
+            Solution:solution,
+            Hint:"",
+        }
+        $.ajax({
+                type:"POST",
+                url:"/next",
+                data:JSON.stringify(new_set),
+                contentType:"application/json",
+                dataType:'json',
+                success:function(result){
+                    window.location.href = "/next"
+                }
+        })
    }
 </script>
