@@ -116,7 +116,7 @@ def search():
         search = excel_controller.excel_search(data)
         return jsonify(search)
 
-
+gpt = ""
 @app.route("/next",methods=['GET', 'POST'])
 def next():
     generate_set=""
@@ -134,11 +134,18 @@ def next():
         }
         search = excel_controller.excel_search(indexing)
         # print(search)
+        # print(123)
         generate_set = openai_controller.prompt_message_test(search)
+        global gpt
+        gpt = generate_set
+        # print(generate_set)
         return jsonify(generate_set)
     elif request.method == "GET":
-        
-        return render_template('next.html')
+        gpt = json.loads(gpt)
+        # gpt['question'].replace("\n","<br>")
+        print(gpt['question'])
+        print(gpt['solution'])
+        return render_template('next.html',gpt = gpt)
 
 if __name__ == "__main__":
     app.run()

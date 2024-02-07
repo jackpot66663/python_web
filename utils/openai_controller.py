@@ -98,13 +98,11 @@ system_message_m = f"""
     The user question json will be delimited with \
     {delimiter} characters.
     Output a python json, where json has the following format:
-    "instruction": <generate a solving steps description array of the new question>
-    "relation":<the comparison between new question and old question>,
+    "question": <generate a new question according to the given old_question,if there are two or more samples,combine both and generate it>
+    "solution": <generate solution that corresponds to the new question>,
 
-    New question description and old question solution can be found in user_message json
-    Analyze new question with the given old question solution
-    Whatever question you solve,try use the function or library that has been used in old question solution 
-    But don't output code directly
+    Old question description and solution can be found in user_message_m json
+    Don't output code directly
 
 
     Only output the json, with nothing else
