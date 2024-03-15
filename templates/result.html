@@ -8,16 +8,9 @@
             <div class="flex-child">
                 <h1>Fill the blank</h1>
                 <div class="n_problem">
-                    <p>from numpy import arange<br>
-                        para = list(map(int, input().split()))<br>
-                        a1 = arange(1, para[0])<br>
-                        a2 = arange(1, para[1])<br>
-                        a1 = a1.reshape(para[2], para[3])<br>
-                        a2 = a2.reshape(para[3], para[4])<br>
-                        a3 = a1.dot(a2)<br>
-                        print(a3)</p>
+                    <p>問題完成區域</p>
                 </div>
-                <input class="button-32" value="Next" onclick="push_to_excel()">
+                <!-- <input class="button-32" value="Next" onclick="push_to_excel()"> -->
             </div>
 
             <div class="flex-child">
@@ -29,8 +22,8 @@
                 <div>
                     <h1>GPT Advice</h1>
                     <textarea name="prompt_display" readonly>
+                        {{ans.code_solution}}
                         {{ans.instruction}}
-                        <!-- {{ans.modification}} -->
                         {{ans.relation}}
                     </textarea>
                 </div>
@@ -41,21 +34,13 @@
 
 </html>
 <script type="text/javascript">
-    var text = "Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:\n1. 接收一個數字N、並利用產生出1~N的ndarray(A1)，例如N為5，便會得到[1 2 3 4]的ndarray。\n2. 將A1轉成MxK的格式\n3. 將A1複製(Deep Copy)到A2\n4. 將A2中所有元素平方\n5. 將A2轉成1×Row的格式。(如原本是2x2，便需轉換成1x4)\n輸入 :\n每個輸入依空格區隔分別依序為: N、M、K。\nN與矩陣內容相關，M、K與矩陣形狀相關，詳細參考上方題目說明。\n輸出:\n輸出為A1和A2兩個矩陣"
+   var text = "中央咖啡店的店面房租為每月6000元，如果當月天數不足月，則也算全額6000元，\n請幫店長寫出一python程式，每當輸入月數跟天數去計算應繳費之金額。"
     text = text.replace(/\n/g,'<br>')
     $(document).ready(function () {
         document.getElementById("problem_d").innerHTML = text
    });
    //
-   var solution = "from numpy import arange\n\
-import numpy as np\n\
-para = list(map(int, input().split()))\n\
-a1 = arange(1, para[0])\n\
-a1 = a1.reshape(para[1], para[2])\n\
-a2 = np.copy(a1)\n\
-a2 = np.square(a2)\n\
-print(a1)\n\
-print(a2)"
+   var solution = ""
     //
    function push_to_excel(){
         // console.log(123)

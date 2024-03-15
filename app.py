@@ -99,8 +99,9 @@ def result():
         # print(result)
         return jsonify(result)
     elif request.method == "GET":
+        
         ans = json.loads(ans)
-        # print(ans)
+        print(ans)
         # print(ans['new_solution'])
         return render_template('result.html',ans = ans)
     
@@ -116,36 +117,36 @@ def search():
         search = excel_controller.excel_search(data)
         return jsonify(search)
 
-gpt = ""
-@app.route("/next",methods=['GET', 'POST'])
-def next():
-    generate_set=""
-    if request.method=="POST":
+# gpt = ""
+# @app.route("/next",methods=['GET', 'POST'])
+# def next():
+#     generate_set=""
+#     if request.method=="POST":
         
-        data = request.get_json()
-        data['Category'] = c
-        data['Keywords'] = k
+#         data = request.get_json()
+#         data['Category'] = c
+#         data['Keywords'] = k
         
-        excel_controller.excel_write(data)
-        #要gpt生成新題目
-        indexing = {
-            "Category":c,
-            "Keyword":k,
-        }
-        search = excel_controller.excel_search(indexing)
-        # print(search)
-        # print(123)
-        generate_set = openai_controller.prompt_message_test(search)
-        global gpt
-        gpt = generate_set
-        # print(generate_set)
-        return jsonify(generate_set)
-    elif request.method == "GET":
-        gpt = json.loads(gpt)
-        # gpt['question'].replace("\n","<br>")
-        print(gpt['question'])
-        print(gpt['solution'])
-        return render_template('next.html',gpt = gpt)
+#         excel_controller.excel_write(data)
+#         #要gpt生成新題目
+#         indexing = {
+#             "Category":c,
+#             "Keyword":k,
+#         }
+#         search = excel_controller.excel_search(indexing)
+#         # print(search)
+#         # print(123)
+#         generate_set = openai_controller.prompt_message_test(search)
+#         global gpt
+#         gpt = generate_set
+#         # print(generate_set)
+#         return jsonify(generate_set)
+#     elif request.method == "GET":
+#         gpt = json.loads(gpt)
+#         # gpt['question'].replace("\n","<br>")
+#         print(gpt['question'])
+#         print(gpt['solution'])
+#         return render_template('next.html',gpt = gpt)
 
 if __name__ == "__main__":
     app.run()

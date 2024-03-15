@@ -2,25 +2,24 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename='welcome.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <title>CBR System</title>
     </head>
     <body>
-        <div>
-            {% if user.first_login %}
-            <h1>
+        <div class="welcome_text">
+        {% if user.first_login %}
+            <p>
                 Welcome,{{user.id}}!
-            </h1>
+            </p>
             {% else %}
-            <h1>
+            <p>
                 Welcome Back,{{user.id}}!
-            </h1>
+            </p>
             {% endif %}
-            <a href="{{url_for('import_csv')}}">GO</a>
         </div>
-        <!-- {% if user.uploads%}
-            {% include 'db_import_s.html' %}
-        {% else %}
-            {% include 'db_import.html' %}
-        {%endif%} -->
+        <div class="welcome_but">
+            <input type="button" value="START" name="start" onclick="">
+        </div>
     </body>
 </html>

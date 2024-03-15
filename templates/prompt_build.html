@@ -18,7 +18,7 @@
                 
                 <div class="c_category">
                     <fieldset>
-                        <legend>選擇問題種類</legend>
+                        <legend>你認為此題會運用到下列何種程式概念?</legend>
                         {% for category in categorys %}
                             <input type="radio" name="promptc" value="{{category}}"></input>
                             <label for="{{category}}">{{category}}</label>
@@ -27,14 +27,44 @@
                 </div>
                 <div class="c_keyword">
                     <fieldset>
-                        <legend>選擇問題核心概念</legend>
+                        <legend>將上述概念轉換為程式碼為?</legend>
                         {% for keyword in keywords %}
                             <input type="radio" name="promptk" value="{{keyword}}"></input>
                             <label for="{{keyword}}">{{keyword}}</label>
                         {% endfor %}
                     </fieldset>
                 </div>
-                <div class ="c_role">
+                <div class ="c_input">
+                    <fieldset>
+                        <legend>根據題目，你認為輸入格式為?</legend>
+                        
+                        <input type="radio" name="prompti" value="int_s"></input>
+                        <label for="int_s">整數，單行輸入</label>
+                        <input type="radio" name="prompti" value="int_m"></input>
+                        <label for="int_m">整數，多行輸入</label>
+                        <input type="radio" name="prompti" value="s_s"></input>
+                        <label for="s_s">字串，單行輸入</label>
+                        <input type="radio" name="prompti" value="s_m"></input>
+                        <label for="s_m">字串，多行輸入</label>
+                        <input type="radio" name="prompti" value="l_s_s"></input>
+                        <label for="l_s_s">列表，單行輸入，元素為字串</label>
+                        <input type="radio" name="prompti" value="l_s_int"></input>
+                        <label for="l_s_int">列表，單行輸入，元素為整數</label>
+                    </fieldset>
+                </div>
+                <div class ="c_output">
+                    <fieldset>
+                        <legend>根據題目，你認為答案輸出為?</legend>
+                        
+                        <input type="radio" name="prompto" value="int"></input>
+                        <label for="int">印出指定整數結果</label>
+
+                        <input type="radio" name="prompto" value="str"></input>
+                        <label for="str">印出指定字串結果</label>
+                        
+                    </fieldset>
+                </div>
+                <!-- <div class ="c_role">
                     <fieldset>
                         <legend>選擇AI角色</legend>
                         
@@ -45,7 +75,7 @@
                         <label for="te">老師</label>
                         
                     </fieldset>
-                </div>
+                </div> -->
                 <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search">
             </div>
             <div id="target-content">
@@ -54,9 +84,10 @@
                     <button id="btnpopclose" class="popup-close">×</button>
                 </div>
                 <div id="prompt-content">
-                    <p>選擇的種類為:<span id="g"></span></p>
-                    <p>選擇的關鍵字為:<span id="k"></span></p>
-                    <p>選擇的角色:<span id="r"></span></p>
+                    <p>你認為此題會運用:<span id="g"></span></p>
+                    <p>概念轉換成程式碼為:<span id="k"></span></p>
+                    <p>選擇輸入格式為:<span id="i"></span></p>
+                    <p>選擇答案輸出為:<span id="o"></span></p>
                 </div>
                 <hr>
                 <p>相關之範例題目為:</p>
@@ -73,6 +104,8 @@
 
 <script type="text/javascript">
    var problems = {{problems|safe}}
+   var output=""
+   var input = ""
    var category = ""
    var keyword = ""
    var role = ""
@@ -86,8 +119,8 @@
 //    var t1 = t1_s.toString()
 //    var t2_s = problems[9]['Solution']
 //    var t2 = t2_s.toString()
-   var text = "Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:\n1. 接收一個數字N、並利用產生出1~N的ndarray(A1)，例如N為5，便會得到[1 2 3 4]的ndarray。\n2. 將A1轉成MxK的格式\n3. 將A1複製(Deep Copy)到A2\n4. 將A2中所有元素平方\n5. 將A2轉成1×Row的格式。(如原本是2x2，便需轉換成1x4)\n輸入 :\n每個輸入依空格區隔分別依序為: N、M、K。\nN與矩陣內容相關，M、K與矩陣形狀相關，詳細參考上方題目說明。\n輸出:\n輸出為A1和A2兩個矩陣"
-    text = text.replace(/\n/g,'<br>')
+   var text = "中央咖啡店的店面房租為每月6000元，如果當月天數不足月，則也算全額6000元，\n請幫店長寫出一python程式，每當輸入月數跟天數去計算應繳費之金額。"
+   text = text.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
         document.getElementById("problem_d").innerHTML = text
@@ -98,15 +131,23 @@
    $('input[type=radio][name="promptk"]').on('change', function() {
         keyword = $(this).val()
    })
-   $('input[type=radio][name="promptr"]').on('change', function() {
-        role = $(this).val()
+//    $('input[type=radio][name="promptr"]').on('change', function() {
+//         role = $(this).val()
+//    })
+   $('input[type=radio][name="prompti"]').on('change', function() {
+        input = $(this).val()
    })
+   $('input[type=radio][name="prompto"]').on('change', function() {
+        output = $(this).val()
+   })
+
    $('#btnpopclose').click(function(){
         $('#target-content').hide();
    })
-   //點選完prompt進行索引
+   //點選完進行索引
    $('#search').click(function(){
-        var prompt = {
+        var search_case = {
+            
             Category:category,
             Keyword:keyword,
         }
@@ -116,13 +157,14 @@
         $.ajax({
                 type:"POST",
                 url:"/search",
-                data:JSON.stringify(prompt),
+                data:JSON.stringify(search_case),
                 contentType:"application/json",
                 dataType:'json',
                 success:function(result){
                     $('#g').html(category)
                     $('#k').html(keyword)
-                    $('#r').html(role)
+                    $('#i').html(input)
+                    $('#o').html(output)
                     // console.log(result)
                     var display = ""
                     result.forEach(element => {
@@ -150,6 +192,8 @@
    //送出
    $('input[type=submit]').click(function(){
             var choice={
+                        Input:input,
+                        Output:output,
                         Category:category,
                         Keyword:keyword,
                         Problem_n:text.toString(),
