@@ -1,7 +1,7 @@
 from utils import file_controller
 from utils import openai_controller
 from utils import excel_controller
-from dao import user_dao
+from dao.user_dao import User
 from flask import Flask, render_template, request, redirect, url_for, session,jsonify
 import pandas as pd
 import os
@@ -9,6 +9,7 @@ from fileinput import filename
 from werkzeug.utils import secure_filename
 import numpy as np
 import json
+import datetime
 
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
@@ -38,18 +39,32 @@ def login():
 def welcome():
     if request.method == 'POST':
         username = request.form['username']
-        user_dao.user_info['id'] = username
         if file_controller.check_file_exist(username):
-            user_dao.user_info['first_login'] = False
+            user_dict = file_controller.get_user_file(username)
+            user_info = User(user_dict)
+            user_info.first_login = False
+            user_info.cur_login = str(datetime.datetime.today())
+            user_json = user_info.toJSON()
+            file_controller.update_user_file(user_json)
+            session['user'] = user_json
+            return render_template('welcome_user.html', user=json.loads(user_json))
         else:
-            file_controller.creste_user_file(user_dao.user_info)
-    print(user_dao.user_info)
-    return render_template('welcome_user.html', user=user_dao.user_info)
+            user_info = User()
+            user_info.name = username
+            user_info.first_login = True
+            user_info.create_time = str(datetime.datetime.today())
+            user_info.cur_login = str(datetime.datetime.today())
+            user_json = user_info.toJSON()
+            file_controller.create_user_file(user_json)
+            session['user'] = user_json
+            return render_template('welcome_user.html', user=json.loads(user_json))
+   
 
-@app.route("/db_import",methods=['GET', 'POST'])
+@app.route("/select",methods=['GET', 'POST'])
 def import_csv():
+    user_json = session['user']
     if request.method == 'POST':
-        # print(user_dao.user_info['id'])
+        
         f = request.files.get('file')
         data_filename = secure_filename(f.filename)
 
@@ -57,18 +72,19 @@ def import_csv():
 
         session['uploaded_data_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'],data_filename)
         
-        user_dao.user_info['uploads'] = True
+        # user_dao.user_info['uploads'] = True
         # Uploaded File Path
         data_file_path = session.get('uploaded_data_file_path', None)
         # read csv
         uploaded_df = pd.read_csv(data_file_path,encoding='utf-8')
         # Converting to html Table
         uploaded_df_html = uploaded_df.to_html()
-        return render_template('db_import.html',user=user_dao.user_info,data_var=uploaded_df_html)
-    return render_template('db_import.html',user=user_dao.user_info)
+        return render_template('select.html',user=json.loads(user_json),data_var=uploaded_df_html)
+    elif request.method == "GET":
+        return render_template('select.html',user=json.loads(user_json))
 
 
-@app.route("/prompt_build",methods=['GET', 'POST'])
+@app.route("/topic_1",methods=['GET', 'POST'])
 def prompt_build():
     cols = ['Category','Keywords','Problem_Description','Solution']
     df = pd.read_csv(session['uploaded_data_file_path'],encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str})
@@ -86,7 +102,7 @@ def prompt_build():
         for i,keyword in enumerate(tarray):
             keywords.add(keyword)
 
-    return render_template('prompt_build.html',problems=df_n,categorys = categorys,keywords = keywords)
+    return render_template('topic_1.html',problems=df_n,categorys = categorys,keywords = keywords)
 
 ans = ""
 @app.route("/result",methods=['GET', 'POST'])

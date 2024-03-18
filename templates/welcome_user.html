@@ -7,19 +7,21 @@
         <title>CBR System</title>
     </head>
     <body>
-        <div class="welcome_text">
-        {% if user.first_login %}
-            <p>
-                Welcome,{{user.id}}!
-            </p>
-            {% else %}
-            <p>
-                Welcome Back,{{user.id}}!
-            </p>
-            {% endif %}
-        </div>
-        <div class="welcome_but">
-            <input type="button" value="START" name="start" onclick="">
+        <div class="welcome">
+            <div class="welcome_text">
+            {% if user.first_login %}
+                <p>
+                    Welcome,{{user.name}}!
+                </p>
+                {% else %}
+                <p>
+                    Welcome Back,{{user.name}}!
+                </p>
+                {% endif %}
+            </div>
+            <div class="welcome_but">
+                <input type="button" value="START" name="start" onclick="window.location.href = '/select'">
+            </div>
         </div>
     </body>
 </html>

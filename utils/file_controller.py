@@ -1,4 +1,3 @@
-import datetime
 import json
 import os
 
@@ -13,11 +12,27 @@ def check_file_exist(username):
             exist = True
     return exist
 
+def get_user_file(username):
+    user_str =""
+    with open('user_log/'f'{username}.txt', 'r') as f:
+        user_str = f.read()
+        f.close()
+    return json.loads(user_str)
 
-def creste_user_file(user):
-    username = user['id']
-    user['create_time'] = str(datetime.datetime.today())
+def create_user_file(user):
+    user = json.loads(user)
+    username = user["name"]
+    with open('user_log/'f'{username}.txt', 'w') as f:
+        query = json.dumps(user)
+        print(query)
+        f.write(query)
+        f.close()
+
+def update_user_file(user):
+    user = json.loads(user)
+    username = user["name"]
     with open('user_log/'f'{username}.txt', 'w') as f:
         query = json.dumps(user)
         f.write(query)
+        f.close()
 
