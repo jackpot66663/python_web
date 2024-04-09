@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 import numpy as np
 import json
 import datetime
+from waitress import serve
 
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
@@ -164,6 +165,11 @@ def search():
 #         print(gpt['solution'])
 #         return render_template('next.html',gpt = gpt)
 
+mode = "dev"
+
 if __name__ == "__main__":
-    app.run()
+    if mode == "dev":
+        app.run(host='0.0.0.0',port='5000')
+    else:
+        serve(app,host='0.0.0.0',port='5000')
              
