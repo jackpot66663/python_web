@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='result.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <title>Result</title>
+    </head>
+    <body>
+        <div class="main">
+            <div class="flex-child">
+                <div>
+                    <h1>Problem</h1>
+                    <p id="problem_d">
+                        {{problem}}
+                    </p>
+                </div>
+                <hr>
+                <div>
+                    <h1>GPT Answer</h1>
+                    <textarea name="prompt_display" readonly>
+                        {{ans.code_solution}}
+                    </textarea>
+                </div>
+                <input class="button-33" id= "next" style="background-color:	#00BB00;" value="Next Level" onclick="window.location.href='/topic_1_extend '">
+            </div>
+        </div>
+        
+    </body>
+
+</html>
+<script type="text/javascript">
+   var solution = ""
+    //
+   function push_to_excel(){
+        // console.log(123)
+        new_set = {
+            Category:"",
+            Keywords:"",
+            Problem_Description:text,
+            Solution:solution,
+            Hint:"",
+        }
+        $.ajax({
+                type:"POST",
+                url:"/next",
+                data:JSON.stringify(new_set),
+                contentType:"application/json",
+                dataType:'json',
+                success:function(result){
+                    window.location.href = "/next"
+                }
+        })
+   }
+</script>

@@ -32,14 +32,16 @@ def get_completion_from_messages(messages,
 def prompt_message(data):
     
     global user_message 
-    input = input_ac[data['Input']]
-    output = output_ac[data['Output']]
-    print(input+output)
-    user_message['new_question_input'] = input
-    user_message['new_question_output'] = output
+    # input = input_ac[data['Input']]
+    # output = output_ac[data['Output']]
+    # print(input+output)
+    user_message['new_question_input'] = data['Input']
+    user_message['new_question_output'] = data['Output']
     user_message['new_question'] = data['Problem_n']
+    user_message['process'] = data['Category']
     user_message['old_question'] = data['Problem_o']
     user_message['old_question_solution'] = data['Solution']
+    user_message['Hint'] = data['Hint']
     # print(user_message)
     messages =  [  
         {'role':'system', 

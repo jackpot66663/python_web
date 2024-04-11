@@ -41,6 +41,38 @@ p{
     margin-right: 10px;
 }
 
+legend {
+  color: #000;
+  font-size: large;
+}
+
+#input_define{
+  width:500px;
+  height:30px;
+  
+  border-radius:10px;
+  
+  font-size: 16px;
+}
+
+#output_define{
+  width:500px;
+  height:30px;
+  
+  border-radius:10px;
+ 
+  font-size: 16px;
+}
+
+#hint{
+  width:500px;
+  height:30px;
+  
+  border-radius:10px;
+  
+  font-size: 16px;
+}
+
 .button-33 {
   position: relative;
   margin-top: 30px;  
@@ -76,6 +108,40 @@ p{
   cursor: not-allowed;
 }
 
+.button-34 {
+  position: relative;
+  margin-top: 20px;  
+  left: 5%;
+  transform: translate(-50%, -50%);
+  background-color: 	#FF8000;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+  text-align: center;
+  transition: 200ms;
+  width: 10%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 14px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-34:not(:disabled):hover,
+.button-34:not(:disabled):focus {
+  outline: 0;
+  background: #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
+}
+
+.button-34:disabled {
+  filter: saturate(0.2) opacity(0.5);
+  -webkit-filter: saturate(0.2) opacity(0.5);
+  cursor: not-allowed;
+}
 
 #target-content {
   position: fixed;
@@ -114,4 +180,64 @@ p{
 
 .old{
   display: block;
+}
+
+.add_frame{
+  display: inline-block;
+  margin-top: 10px;
+  width: 900px;
+}
+.sample{
+  display: inline-block;
+  width: 100%;
+}
+.parameter{
+  width:200px;
+  height:25px;
+  
+  border-radius:10px;
+  
+  font-size: 12px;
+}
+
+.sample_input{
+  width:100px;
+  height:25px;
+  
+  border-radius:10px;
+  
+  font-size: 12px;
+}
+
+.button-35 {
+   
+  /* transform: translate(-50%, -50%); */
+  background-color: 	#EA0000;
+  border-radius: 12px;
+  color: #fff;
+  cursor: pointer;
+  font-weight: bold;
+  padding: 5px 10px;
+  /* text-align: center; */
+  transition: 200ms;
+  width: 10%;
+  box-sizing: border-box;
+  border: 0;
+  font-size: 12px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.button-35:not(:disabled):hover,
+.button-35:not(:disabled):focus {
+  outline: 0;
+  background: #000;
+  box-shadow: 0 0 0 2px rgba(0,0,0,.2), 0 3px 8px 0 rgba(0,0,0,.15);
+}
+
+.button-35:disabled {
+  filter: saturate(0.2) opacity(0.5);
+  -webkit-filter: saturate(0.2) opacity(0.5);
+  cursor: not-allowed;
 }

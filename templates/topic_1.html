@@ -16,10 +16,38 @@
 
             <div class="flex-child">
                 <h1>Prompt Production</h1>
-                
+                <div class ="c_input">
+                    <fieldset>
+                        <legend>輸入</legend>
+                        <input type="text"id="input_define" name="prompti" placeholder="整數，單行輸入，代表數字" required>
+                    </fieldset>
+                </div>
+                <div class ="c_output">
+                    <fieldset>
+                        <legend>輸出</legend>
+                        <input type="text" id="output_define" name="prompto" placeholder="印出指定整數結果" required>
+                    </fieldset>
+                </div>
+                <div class ="sample">
+                    <fieldset>
+                        <legend>範例輸入輸出</legend>
+                        <label for="name">輸入:</label>
+                        <input type="text" class="sample_input" name="s_i" placeholder="">
+                        <label for="type">輸出:</label>
+                        <input type="text" class="sample_input" name="s_o" placeholder="">
+                    </fieldset>
+                </div>
+                <div class ="memory">
+                    <fieldset>
+                        <legend>參數宣告</legend>
+                        <div id="m_c">
+                            </div>
+                        <button class="button-34" onclick="add_memory()">新增參數</button>
+                    </fieldset>
+                </div>
                 <div class="c_category">
                     <fieldset>
-                        <legend>你認為此題會運用到下列何種程式概念?</legend>
+                        <legend>處理方式</legend>
                         {% for category in categorys %}
                             <input type="radio" name="promptc" value="{{category}}"></input>
                             <label for="{{category}}">{{category}}</label>
@@ -28,77 +56,30 @@
                 </div>
                 <div class="c_keyword">
                     <fieldset>
-                        <legend>將上述概念轉換為程式碼為?</legend>
+                        <legend>處理方式轉換程式概念</legend>
                         {% for keyword in keywords %}
                             <input type="radio" name="promptk" value="{{keyword}}"></input>
                             <label for="{{keyword}}">{{keyword}}</label>
                         {% endfor %}
                     </fieldset>
                 </div>
-                <div class ="c_input">
+                <div class ="hint">
                     <fieldset>
-                        <legend>根據題目，你認為輸入格式為?</legend>
-                        
-                        <input type="radio" name="prompti" value="int_s"></input>
-                        <label for="int_s">整數，單行輸入</label>
-                        <input type="radio" name="prompti" value="int_m"></input>
-                        <label for="int_m">整數，多行輸入</label>
-                        <input type="radio" name="prompti" value="s_s"></input>
-                        <label for="s_s">字串，單行輸入</label>
-                        <input type="radio" name="prompti" value="s_m"></input>
-                        <label for="s_m">字串，多行輸入</label>
-                        <input type="radio" name="prompti" value="l_s_s"></input>
-                        <label for="l_s_s">列表，單行輸入，元素為字串</label>
-                        <input type="radio" name="prompti" value="l_s_int"></input>
-                        <label for="l_s_int">列表，單行輸入，元素為整數</label>
+                        <legend>關鍵提示</legend>
+                        <input type="text" id="hint" placeholder="">
                     </fieldset>
                 </div>
-                <div class ="c_output">
-                    <fieldset>
-                        <legend>根據題目，你認為答案輸出為?</legend>
-                        
-                        <input type="radio" name="prompto" value="int"></input>
-                        <label for="int">印出指定整數結果</label>
-
-                        <input type="radio" name="prompto" value="str"></input>
-                        <label for="str">印出指定字串結果</label>
-                        
-                    </fieldset>
-                </div>
-                <!-- <div class ="c_role">
-                    <fieldset>
-                        <legend>選擇AI角色</legend>
-                        
-                        <input type="radio" name="promptr" value="ta"></input>
-                        <label for="ta">助教</label>
-
-                        <input type="radio" name="promptr" value="te"></input>
-                        <label for="te">老師</label>
-                        
-                    </fieldset>
-                </div> -->
-                <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search">
+                <!-- <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search"> -->
+                <input class="button-33" type="submit" value="Ask AI">
             </div>
-            <div id="target-content">
-                <div class="popup-header">
-                    <span style="font-weight:bold">Check search result: </span>
-                    <button id="btnpopclose" class="popup-close">×</button>
-                </div>
-                <div id="prompt-content">
-                    <p>你認為此題會運用:<span id="g"></span></p>
-                    <p>概念轉換成程式碼為:<span id="k"></span></p>
-                    <p>選擇輸入格式為:<span id="i"></span></p>
-                    <p>選擇答案輸出為:<span id="o"></span></p>
-                </div>
-                <hr>
-                <p>相關之範例題目為:</p>
-
-                <div id="old">
-                    
-                 </div>
-
-                <input class="button-33" style="top:50%;left:50%;bottom: 20px;;" type="submit" value="Ask AI">
-            </div>
+            
+            <!-- <div class="add_frame">
+                <label for="name">參數名稱:</label>
+                <input type="text" class="parameter" name="p_n" placeholder="a">
+                <label for="type">參數型別:</label>
+                <input type="text" class="parameter" name="p_t" placeholder="int、str、list">
+                <button class="button-34" style="background-color:#EA0000"onclick="delete_memory()">刪除參數</button>
+            </div> -->
         </div>
     </body>
 </html>
@@ -109,22 +90,15 @@
    var input = ""
    var category = ""
    var keyword = ""
-   var role = ""
    var description = []
    var solution = []
+   var hint = ""
 
-   //測試case用
-//    var p1_o = problems[8]['Problem_Description']
-//    var p2_o = problems[9]['Problem_Description']
-//    var t1_s = problems[8]['Solution']
-//    var t1 = t1_s.toString()
-//    var t2_s = problems[9]['Solution']
-//    var t2 = t2_s.toString()
-   var text = "中央咖啡店的店面房租為每月6000元，如果當月天數不足月，則也算全額6000元，\n請幫店長寫出一python程式，每當輸入月數跟天數去計算應繳費之金額。"
-   text = text.replace(/\n/g,'<br>')
+   var basic = problems[2]['Problem_Description']
+   basic = basic.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
-        document.getElementById("problem_d").innerHTML = text
+        document.getElementById("problem_d").innerHTML = basic
    });
    $('input[type=radio][name="promptc"]').on('change', function() {
         category = $(this).val()
@@ -132,75 +106,91 @@
    $('input[type=radio][name="promptk"]').on('change', function() {
         keyword = $(this).val()
    })
-//    $('input[type=radio][name="promptr"]').on('change', function() {
-//         role = $(this).val()
-//    })
-   $('input[type=radio][name="prompti"]').on('change', function() {
-        input = $(this).val()
-   })
-   $('input[type=radio][name="prompto"]').on('change', function() {
-        output = $(this).val()
-   })
+
+   var add_div=1;
+   function add_memory(){
+        var obj = document.createElement("div")
+        obj.id = "add_"+add_div
+        obj.innerHTML='<div class="add_frame">\n'+
+                    '<label for="name">參數名稱:</label>\n'+
+                    '<input type="text" class="parameter" name="p_n" placeholder="a">\n'+
+                    '<label for="type">參數型別:</label>\n'+
+                    '<input type="text" class="parameter" name="p_t" placeholder="int、str、list...">\n'+
+                    '<button class="button-35" onclick="delete_memory(this)">刪除參數</button>\n'+
+                '</div>\n'
+        add_div++
+        document.getElementById('m_c').appendChild(obj)
+   }
+
+   function delete_memory(but){
+        var id = but.parentNode.parentNode.id
+        var obj = document.getElementById(id)
+        document.getElementById('m_c').removeChild(obj)
+   }
 
    $('#btnpopclose').click(function(){
         $('#target-content').hide();
    })
    //點選完進行索引
-   $('#search').click(function(){
-        var search_case = {
+//    $('#search').click(function(){
+//         var search_case = {
             
-            Category:category,
-            Keyword:keyword,
-        }
-        // console.log(prompt)
+//             Category:category,
+//             Keyword:keyword,
+//         }
+//         // console.log(prompt)
 
-        //ajax開始
-        $.ajax({
-                type:"POST",
-                url:"/search",
-                data:JSON.stringify(search_case),
-                contentType:"application/json",
-                dataType:'json',
-                success:function(result){
-                    $('#g').html(category)
-                    $('#k').html(keyword)
-                    $('#i').html(input)
-                    $('#o').html(output)
-                    // console.log(result)
-                    var display = ""
-                    result.forEach(element => {
-                        // console.log(element)
-                        var t1 = element[2]
-                        t1 = t1.replace(/\n/g,'<br>')
-                        description += element[2]
-                        var t2 = element[3]
-                        t2 = t2.replace(/\n/g,'<br>')
-                        solution += element[3]
-                        display+=t1+"<br>"
-                        console.log(display)
-                        display+=t2+"<hr>"
+//         //ajax開始
+//         $.ajax({
+//                 type:"POST",
+//                 url:"/search",
+//                 data:JSON.stringify(search_case),
+//                 contentType:"application/json",
+//                 dataType:'json',
+//                 success:function(result){
+//                     $('#g').html(category)
+//                     $('#k').html(keyword)
+//                     $('#i').html(input)
+//                     $('#o').html(output)
+//                     // console.log(result)
+//                     var display = ""
+//                     result.forEach(element => {
+//                         // console.log(element)
+//                         var t1 = element[2]
+//                         t1 = t1.replace(/\n/g,'<br>')
+//                         description += element[2]
+//                         var t2 = element[3]
+//                         t2 = t2.replace(/\n/g,'<br>')
+//                         solution += element[3]
+//                         display+=t1+"<br>"
+//                         console.log(display)
+//                         display+=t2+"<hr>"
                         
-                    });
-                    $('#old').html(display)
-                    $('#target-content').show()
-                }
-        })
+//                     });
+//                     $('#old').html(display)
+//                     $('#target-content').show()
+//                 }
+//         })
         
-   })
+//    })
    //
    //將索引產出之舊問題整理
    
    //送出
    $('input[type=submit]').click(function(){
+            input = document.getElementById('input_define').value
+            output = document.getElementById('output_define').value
+            // console.log(input+output)
             var choice={
+                        Mode:1,
                         Input:input,
                         Output:output,
                         Category:category,
                         Keyword:keyword,
-                        Problem_n:text.toString(),
+                        Problem_n:basic.toString(),
                         Problem_o:description,
                         Solution:solution,
-                        Role:role
+                        Hint:hint,
             }
             // console.log(choice)
             $.ajax({

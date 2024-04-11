@@ -10,7 +10,7 @@ from werkzeug.utils import secure_filename
 import numpy as np
 import json
 import datetime
-from waitress import serve
+
 
 
 UPLOAD_FOLDER = os.path.join('staticFiles', 'uploads')
@@ -65,30 +65,32 @@ def welcome():
 def import_csv():
     user_json = session['user']
     if request.method == 'POST':
-        
-        f = request.files.get('file')
-        data_filename = secure_filename(f.filename)
+        #
+        # f = request.files.get('file')
+        # data_filename = secure_filename(f.filename)
 
-        f.save(os.path.join(app.config['UPLOAD_FOLDER'],data_filename))
+        # f.save(os.path.join(app.config['UPLOAD_FOLDER'],data_filename))
 
-        session['uploaded_data_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'],data_filename)
-        
-        # user_dao.user_info['uploads'] = True
-        # Uploaded File Path
-        data_file_path = session.get('uploaded_data_file_path', None)
-        # read csv
-        uploaded_df = pd.read_csv(data_file_path,encoding='utf-8')
-        # Converting to html Table
-        uploaded_df_html = uploaded_df.to_html()
+        # session['uploaded_data_file_path'] = os.path.join(app.config['UPLOAD_FOLDER'],data_filename)
+        # print(session)
+        # # user_dao.user_info['uploads'] = True
+        # # Uploaded File Path
+        # data_file_path = session.get('uploaded_data_file_path', None)
+        # # read csv
+        # uploaded_df = pd.read_csv(data_file_path,encoding='utf-8')
+        # # Converting to html Table
+        # uploaded_df_html = uploaded_df.to_html()
         return render_template('select.html',user=json.loads(user_json),data_var=uploaded_df_html)
     elif request.method == "GET":
+        
         return render_template('select.html',user=json.loads(user_json))
 
 
 @app.route("/topic_1",methods=['GET', 'POST'])
 def prompt_build():
-    cols = ['Category','Keywords','Problem_Description','Solution']
-    df = pd.read_csv(session['uploaded_data_file_path'],encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str})
+    
+    cols = ['Category','Keywords','Problem_Description','Solution','Hint','Prompt','IAO']
+    df = pd.read_csv('staticFiles/uploads/old_problem_db_1.csv',encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str,'Hint':str,'Prompt':str,'IAO':str})
     # for index,row in df.iterrows():
     #     problem_dao.problems_set.append(row)
     # print(problem_dao.problems_set)
@@ -105,12 +107,34 @@ def prompt_build():
 
     return render_template('topic_1.html',problems=df_n,categorys = categorys,keywords = keywords)
 
+@app.route("/topic_1_extend",methods=['GET', 'POST'])
+def prompt_build_extend():
+    cols = ['Category','Keywords','Problem_Description','Solution','Hint','Prompt','IAO']
+    df = pd.read_csv('staticFiles/uploads/old_problem_db_1.csv',encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str,'Hint':str,'Prompt':str,'IAO':str})
+    df_n = df.to_json(orient='index')
+    problem_dict = json.loads(df_n)
+    categorys = set()
+    keywords = set()
+    for problem in problem_dict:
+        categorys.add(problem_dict[problem]['Category'])
+        t = problem_dict[problem]['Keywords']
+        tarray = t.split(',')
+        for i,keyword in enumerate(tarray):
+            keywords.add(keyword)
+
+    return render_template('topic_1_e.html',problems=df_n,categorys = categorys,keywords = keywords)
+
+
 ans = ""
+problem = ""
 @app.route("/result",methods=['GET', 'POST'])
 def result():
     if request.method=="POST":
         data = request.get_json()
-        result = openai_controller.prompt_message(data)
+        global problem
+        problem = data['Problem_n']
+        if data['Mode']==1:
+            result = openai_controller.prompt_message(data)
         global ans 
         ans = result
         # print(result)
@@ -118,9 +142,9 @@ def result():
     elif request.method == "GET":
         
         ans = json.loads(ans)
-        print(ans)
+        # print(ans)
         # print(ans['new_solution'])
-        return render_template('result.html',ans = ans)
+        return render_template('result_pre.html',ans = ans,problem = problem)
     
 
 @app.route("/search",methods=['GET', 'POST'])
@@ -165,11 +189,8 @@ def search():
 #         print(gpt['solution'])
 #         return render_template('next.html',gpt = gpt)
 
-mode = "dev"
-
 if __name__ == "__main__":
-    if mode == "dev":
-        app.run(host='0.0.0.0',port='5000')
-    else:
-        serve(app,host='0.0.0.0',port='5000')
+
+    app.run()
+    
              
