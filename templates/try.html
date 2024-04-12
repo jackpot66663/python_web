@@ -1,0 +1,49 @@
+<html>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='try.css') }}">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <title>Try it</title>
+    </head>
+    <body>
+        <div class="main">
+            <div class="flex-child">
+                <div>
+                    <h1>Here's your prompt</h1>
+                    <div class="prompt">
+                        <div><label for="name">新問題:<br>
+                            {{prompt.Problem_n}}
+                        </label></div>
+                        <div><label for="name">新問題輸入:<br>
+                            {{prompt.Input}}
+                        </label></div>
+                        <div><label for="name">新問題輸出:<br>
+                            {{prompt.Output}}
+                        </label></div>
+                        <div><label for="name">範例輸入:<br>
+                            {{prompt.S_input}}
+                        </label></div>
+                        <div><label for="name">範例輸出:<br>
+                            {{prompt.S_output}}
+                        </label></div>
+                        <div><label for="name">參數宣告:<br>
+                            {{prompt.Parameters}}
+                        </label></div>
+                        <div><label for="name">處理方式:<br>
+                            {{prompt.Category}}{{prompt.Keyword}}
+                        </label></div>
+                        <div><label for="name">舊問題:<br>
+                            {{prompt.Problem_o}}
+                        </label></div>
+                        <div><label for="name">舊問題解答:<br>
+                            {{prompt.Solution}}
+                        </label></div>
+                        
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        
+    </body>
+
+</html>

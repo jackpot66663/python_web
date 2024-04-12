@@ -32,9 +32,9 @@
                     <fieldset>
                         <legend>範例輸入輸出</legend>
                         <label for="name">輸入:</label>
-                        <input type="text" class="sample_input" name="s_i" placeholder="">
+                        <input type="text" class="sample_input" name="s_i" id="s_i" placeholder="">
                         <label for="type">輸出:</label>
-                        <input type="text" class="sample_input" name="s_o" placeholder="">
+                        <input type="text" class="sample_input" name="s_o" id ="s_o" placeholder="">
                     </fieldset>
                 </div>
                 <div class ="memory">
@@ -93,6 +93,9 @@
    var description = []
    var solution = []
    var hint = ""
+   var sample_i
+   var sample_o
+   var parameters = []
 
    var basic = problems[2]['Problem_Description']
    basic = basic.replace(/\n/g,'<br>')
@@ -113,9 +116,9 @@
         obj.id = "add_"+add_div
         obj.innerHTML='<div class="add_frame">\n'+
                     '<label for="name">參數名稱:</label>\n'+
-                    '<input type="text" class="parameter" name="p_n" placeholder="a">\n'+
+                    '<input type="text" class="parameter" name="p_n" id="p_n" placeholder="a">\n'+
                     '<label for="type">參數型別:</label>\n'+
-                    '<input type="text" class="parameter" name="p_t" placeholder="int、str、list...">\n'+
+                    '<input type="text" class="parameter" name="p_t" id="p_t" placeholder="int、str、list...">\n'+
                     '<button class="button-35" onclick="delete_memory(this)">刪除參數</button>\n'+
                 '</div>\n'
         add_div++
@@ -131,62 +134,35 @@
    $('#btnpopclose').click(function(){
         $('#target-content').hide();
    })
-   //點選完進行索引
-//    $('#search').click(function(){
-//         var search_case = {
-            
-//             Category:category,
-//             Keyword:keyword,
-//         }
-//         // console.log(prompt)
-
-//         //ajax開始
-//         $.ajax({
-//                 type:"POST",
-//                 url:"/search",
-//                 data:JSON.stringify(search_case),
-//                 contentType:"application/json",
-//                 dataType:'json',
-//                 success:function(result){
-//                     $('#g').html(category)
-//                     $('#k').html(keyword)
-//                     $('#i').html(input)
-//                     $('#o').html(output)
-//                     // console.log(result)
-//                     var display = ""
-//                     result.forEach(element => {
-//                         // console.log(element)
-//                         var t1 = element[2]
-//                         t1 = t1.replace(/\n/g,'<br>')
-//                         description += element[2]
-//                         var t2 = element[3]
-//                         t2 = t2.replace(/\n/g,'<br>')
-//                         solution += element[3]
-//                         display+=t1+"<br>"
-//                         console.log(display)
-//                         display+=t2+"<hr>"
-                        
-//                     });
-//                     $('#old').html(display)
-//                     $('#target-content').show()
-//                 }
-//         })
-        
-//    })
-   //
-   //將索引產出之舊問題整理
    
    //送出
    $('input[type=submit]').click(function(){
             input = document.getElementById('input_define').value
             output = document.getElementById('output_define').value
-            // console.log(input+output)
+            sample_i = document.getElementById('s_i').value
+            sample_o = document.getElementById('s_o').value
+            
+            p_raw = document.getElementsByClassName('add_frame')
+            
+            for(var i =0;i<p_raw.length;i++){
+                var parameter_name = p_raw[i].childNodes[3].value
+                var parameter_type = p_raw[i].childNodes[7].value
+                var temp = {
+                    'parameter_name':parameter_name,
+                    'parameter_type':parameter_type
+                }
+                parameters.push(temp)
+            }
+
             var choice={
                         Mode:1,
                         Input:input,
                         Output:output,
+                        S_input:sample_i,
+                        S_output:sample_o,
                         Category:category,
                         Keyword:keyword,
+                        Parameters:parameters,
                         Problem_n:basic.toString(),
                         Problem_o:description,
                         Solution:solution,

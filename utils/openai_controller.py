@@ -2,18 +2,8 @@ from openai import OpenAI
 
 client = OpenAI()
 
-input_ac = {
-    "int_s":"整數，單行輸入",
-    "int_m":"整數，多行輸入",
-    "s_s":"字串，單行輸入",
-    "s_m":"字串，多行輸入",
-    "l_s_s":"列表，單行輸入，元素為字串",
-    "l_s_int":"列表，單行輸入，元素為整數",
-}
-
-output_ac = {
-    "int":"印出指定整數結果",
-    "str":"印出指定整數結果",
+user_message = {
+   
 }
 
 def get_completion_from_messages(messages, 
@@ -32,16 +22,26 @@ def get_completion_from_messages(messages,
 def prompt_message(data):
     
     global user_message 
-    # input = input_ac[data['Input']]
-    # output = output_ac[data['Output']]
-    # print(input+output)
-    user_message['new_question_input'] = data['Input']
-    user_message['new_question_output'] = data['Output']
-    user_message['new_question'] = data['Problem_n']
-    user_message['process'] = data['Category']
-    user_message['old_question'] = data['Problem_o']
-    user_message['old_question_solution'] = data['Solution']
-    user_message['Hint'] = data['Hint']
+    if data['Mode'] == 1:
+        user_message['new_question_input'] = data['Input']
+        user_message['new_question_output'] = data['Output']
+        user_message['new_question'] = data['Problem_n']
+        user_message['sample_input'] = data['S_input']
+        user_message['sample_input'] = data['S_output']
+        user_message['parameter_declaration'] = data['Parameters']
+        user_message['process'] = data['Category']
+        user_message['Hint'] = data['Hint']
+    else:
+        user_message['new_question_input'] = data['Input']
+        user_message['new_question_output'] = data['Output']
+        user_message['new_question'] = data['Problem_n']
+        user_message['sample_input'] = data['S_input']
+        user_message['sample_input'] = data['S_output']
+        user_message['parameter_declaration'] = data['Parameters']
+        user_message['process'] = data['Category']
+        user_message['old_question'] = data['Problem_o']
+        user_message['old_question_solution'] = data['Solution']
+        user_message['Hint'] = data['Hint']
     # print(user_message)
     messages =  [  
         {'role':'system', 
@@ -75,13 +75,6 @@ system_message = f"""
     Only output the json, with nothing else
     Output language must be traditional chinese.
 """
-user_message = {
-    "new_question_input":"",
-    "new_question_output":"",
-    "new_question":"",
-    "old_question":"",
-    "old_question_solution":""
-}
 
 #################################################################
 

@@ -127,24 +127,25 @@ def prompt_build_extend():
 
 ans = ""
 problem = ""
+mode = 0
 @app.route("/result",methods=['GET', 'POST'])
 def result():
     if request.method=="POST":
         data = request.get_json()
+        global mode
+        mode= data['Mode']
         global problem
         problem = data['Problem_n']
-        if data['Mode']==1:
-            result = openai_controller.prompt_message(data)
+        result = openai_controller.prompt_message(data)
         global ans 
         ans = result
+        session['prompt'] = data
         # print(result)
         return jsonify(result)
     elif request.method == "GET":
-        
         ans = json.loads(ans)
-        # print(ans)
-        # print(ans['new_solution'])
-        return render_template('result_pre.html',ans = ans,problem = problem)
+        problem = problem.replace("<br>","\n")
+        return render_template('result_pre.html',ans = ans,problem = problem,mode = mode)
     
 
 @app.route("/search",methods=['GET', 'POST'])
@@ -157,6 +158,16 @@ def search():
         k=data['Keyword']
         search = excel_controller.excel_search(data)
         return jsonify(search)
+
+@app.route("/try",methods=['GET','POST'])
+def modify():
+    if request.method == "GET":
+        prompt = session['prompt']
+        print(prompt)
+        prompt['Problem_n'] = prompt['Problem_n'].replace("<br>","\n")
+        prompt['Solution'] = prompt['Solution'].replace("<br>","\n")
+        return render_template('try.html',prompt = prompt)
+
 
 # gpt = ""
 # @app.route("/next",methods=['GET', 'POST'])

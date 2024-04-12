@@ -20,7 +20,14 @@
                         {{ans.code_solution}}
                     </textarea>
                 </div>
+                {% if mode == 1 %}
                 <input class="button-33" id= "next" style="background-color:	#00BB00;" value="Next Level" onclick="window.location.href='/topic_1_extend '">
+                {% else %}
+                <div id = "final">
+                    <input class="button-33" id= "complete" style="background-color:	#00BB00;" value="Complete" onclick="window.location.href='/select '">
+                    <input class="button-33" id= "wrong" style="background-color:	#EA0000;" value="Wrong Answer?" onclick="window.location.href='/try'">
+                </div>
+                {% endif %}
             </div>
         </div>
         

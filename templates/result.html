@@ -24,7 +24,7 @@
                     <h1>GPT Advice</h1>
                     <textarea name="prompt_display" readonly>
                         {{ans.code_solution}}
-                        {{ans.instruction}}
+                        
                         {{ans.relation}}
                     </textarea>
                 </div>
@@ -35,7 +35,7 @@
 
 </html>
 <script type="text/javascript">
-   var text = "中央咖啡店的店面房租為每月6000元，如果當月天數不足月，則也算全額6000元，\n請幫店長寫出一python程式，每當輸入月數跟天數去計算應繳費之金額。"
+   var text = "中央咖啡店的店面房租為每月6000元，如果當月天數不足月，則也算全額6000元，請幫店長寫出一python程式，每當輸入月數跟天數去計算應繳費之金額。"
     text = text.replace(/\n/g,'<br>')
     $(document).ready(function () {
         document.getElementById("problem_d").innerHTML = text
