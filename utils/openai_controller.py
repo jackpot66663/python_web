@@ -2,9 +2,7 @@ from openai import OpenAI
 
 client = OpenAI()
 
-user_message = {
-   
-}
+user_message = {}
 
 def get_completion_from_messages(messages, 
                                  model="gpt-4-0613", 
@@ -65,11 +63,12 @@ system_message = f"""
     "relation":<the comparison between new question and old question>,
     "instruction": <generate steps explanation array of the code_solution>
     
-
-    New question description and old question solution can be found in user_message["new_question"] and user_message["old_question"]
-    Analyze new question with the given old question solution
-    Whatever question you solve,try use the function or library that has been used in old question solution 
-    Beware of the input and output format of the new_question,format that can be found in user_message["new_question_input"] and user_message["new_question_output"]
+    The following rules you must to follow:
+    1.New question description can be found in user_message["new_question"].
+    2.The new problem must be solved according to the given user_message["process"] way,also the parameter declaration must use the given user_message['parameter_declaration'] if given.
+    3.Whatever question you solve,try use function or library that has been used in old question solution to solve new question. 
+    4.The solution must adhere to the input-output examples that can be found in user_message["sample_input"] and user_message["sample_output"].
+    5.If there is given user_message['Hint'],you must reference to solve question.
 
 
     Only output the json, with nothing else

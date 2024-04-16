@@ -10,7 +10,8 @@
             <div class="flex-child">
                 <h1>Problem</h1>
                 <div class="n_problem">
-                    <p id="problem_d"></p>
+                    <h2 id="problem_d"></h2>
+                    <h2 id="problem_iao"></h2>
                 </div>
             </div>
 
@@ -20,12 +21,16 @@
                     <fieldset>
                         <legend>輸入</legend>
                         <input type="text"id="input_define" name="prompti" placeholder="整數，單行輸入，代表數字" required>
+                        <p>型別種類:(多)整數、字串、(二維)串列、浮點數、字典...</p>
+                        <p>輸入格式:單行輸入、多行輸入</p>
+                        <p>輸入意涵:代表月數、天數、第n項費伯數列...</p>
                     </fieldset>
                 </div>
                 <div class ="c_output">
                     <fieldset>
                         <legend>輸出</legend>
                         <input type="text" id="output_define" name="prompto" placeholder="印出指定整數結果" required>
+                        <p>輸出結果:印出指定 整數/字串/串列 結果</p>
                     </fieldset>
                 </div>
                 <div class ="sample">
@@ -99,9 +104,13 @@
 
    var basic = problems[2]['Problem_Description']
    basic = basic.replace(/\n/g,'<br>')
+
+   var iao = problems[2]['IAO']
+   iao = iao.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
         document.getElementById("problem_d").innerHTML = basic
+        document.getElementById("problem_iao").innerHTML = iao
    });
    $('input[type=radio][name="promptc"]').on('change', function() {
         category = $(this).val()

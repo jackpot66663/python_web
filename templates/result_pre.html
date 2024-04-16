@@ -7,12 +7,8 @@
     <body>
         <div class="main">
             <div class="flex-child">
-                <div>
-                    <h1>Problem</h1>
-                    <p id="problem_d">
-                        {{problem}}
-                    </p>
-                </div>
+                <h1>Problem</h1>
+                <h3 id="problem_d"></h3>
                 <hr>
                 <div>
                     <h1>GPT Answer</h1>
@@ -30,13 +26,17 @@
                 {% endif %}
             </div>
         </div>
-        
+        <input type="hidden" name="token_idx" id="token_idx" value='{{problem}}'>
     </body>
 
 </html>
 <script type="text/javascript">
-   var solution = ""
-    //
+   var text = document.getElementById("token_idx").value
+   text = text.replace(/\n/g,'<br>')
+   
+   $(document).ready(function () {
+        document.getElementById("problem_d").innerHTML = text
+   });
    function push_to_excel(){
         // console.log(123)
         new_set = {

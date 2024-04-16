@@ -163,9 +163,16 @@ def search():
 def modify():
     if request.method == "GET":
         prompt = session['prompt']
-        print(prompt)
+        # print(prompt)
         prompt['Problem_n'] = prompt['Problem_n'].replace("<br>","\n")
-        prompt['Solution'] = prompt['Solution'].replace("<br>","\n")
+        # prompt['Solution'] = prompt['Solution'].replace("<br>","\n")
+        p_format =  ""
+        count = 1
+        for p in prompt['Parameters']:
+            p_format += str(count)+". "
+            p_format += p['parameter_name']+":"+ p['parameter_type']+"\n"
+            count += 1
+        prompt['Parameters'] = p_format
         return render_template('try.html',prompt = prompt)
 
 

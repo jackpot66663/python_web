@@ -11,7 +11,7 @@
                     <h1>Here's your prompt</h1>
                     <div class="prompt">
                         <div><label for="name">新問題:<br>
-                            {{prompt.Problem_n}}
+                            <p id="n"></p>
                         </label></div>
                         <div><label for="name">新問題輸入:<br>
                             {{prompt.Input}}
@@ -26,16 +26,16 @@
                             {{prompt.S_output}}
                         </label></div>
                         <div><label for="name">參數宣告:<br>
-                            {{prompt.Parameters}}
+                            <p id="p"></p>
                         </label></div>
                         <div><label for="name">處理方式:<br>
                             {{prompt.Category}}{{prompt.Keyword}}
                         </label></div>
                         <div><label for="name">舊問題:<br>
-                            {{prompt.Problem_o}}
+                            <p id="o"></p>
                         </label></div>
                         <div><label for="name">舊問題解答:<br>
-                            {{prompt.Solution}}
+                            <p id="s"></p>
                         </label></div>
                         
                     </div>
@@ -43,7 +43,26 @@
                 
             </div>
         </div>
-        
+        <input type="hidden" name="token_idx" id="n_i" value='{{prompt.Problem_n}}'>
+        <input type="hidden" name="token_idx" id="s_i" value='{{prompt.Solution}}'>
+        <input type="hidden" name="token_idx" id="o_i" value='{{prompt.Problem_o}}'>
+        <input type="hidden" name="token_idx" id="p_i" value='{{prompt.Parameters}}'>
     </body>
 
 </html>
+<script type="text/javascript">
+    var n = document.getElementById("n_i").value
+    var s = document.getElementById("s_i").value
+    var o = document.getElementById("o_i").value
+    var p = document.getElementById("p_i").value
+    n = n.replace(/\n/g,'<br>')
+    s = s.replace(/\n/g,'<br>')
+    o = o.replace(/\n/g,'<br>')
+    p = p.replace(/\n/g,'<br>')
+    $(document).ready(function () {
+        document.getElementById("n").innerHTML = n
+        document.getElementById("s").innerHTML = s
+        document.getElementById("o").innerHTML = o
+        document.getElementById("p").innerHTML = p
+    });
+</script>
