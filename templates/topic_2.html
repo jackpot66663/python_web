@@ -102,16 +102,17 @@
    var sample_o
    var parameters = []
 
-   var basic = problems[2]['Problem_Description']
+   var basic = problems[3]['Problem_Description']
    basic = basic.replace(/\n/g,'<br>')
 
-   var iao = problems[2]['IAO']
+   var iao = problems[3]['IAO']
    iao = iao.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
         document.getElementById("problem_d").innerHTML = basic
         document.getElementById("problem_iao").innerHTML = iao
    });
+
    $('input[type=radio][name="promptc"]').on('change', function() {
         category = $(this).val()
    })
@@ -152,7 +153,7 @@
             sample_o = document.getElementById('s_o').value
             
             p_raw = document.getElementsByClassName('add_frame')
-            
+
             for(var i =0;i<p_raw.length;i++){
                 var parameter_name = p_raw[i].childNodes[3].value
                 var parameter_type = p_raw[i].childNodes[7].value
@@ -162,13 +163,14 @@
                 }
                 parameters.push(temp)
             }
+
             $('input[type=checkbox][name="promptk"]:checked').each(function(){
                     keyword.push(this.value)
             })
 
             var choice={
                         Mode:1,
-                        Topic:1,
+                        Topic:2,
                         Input:input,
                         Output:output,
                         S_input:sample_i,

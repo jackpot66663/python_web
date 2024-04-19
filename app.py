@@ -128,6 +128,7 @@ def prompt_build_extend():
 ans = ""
 problem = ""
 mode = 0
+topic = 0
 @app.route("/result",methods=['GET', 'POST'])
 def result():
     if request.method=="POST":
@@ -136,6 +137,8 @@ def result():
         mode= data['Mode']
         global problem
         problem = data['Problem_n']
+        global topic
+        topic = data['Topic']
         result = openai_controller.prompt_message(data)
         global ans 
         ans = result
@@ -145,7 +148,7 @@ def result():
     elif request.method == "GET":
         ans = json.loads(ans)
         problem = problem.replace("<br>","\n")
-        return render_template('result_pre.html',ans = ans,problem = problem,mode = mode)
+        return render_template('result_pre.html',ans = ans,problem = problem,mode = mode,topic=topic)
     
 
 @app.route("/search",methods=['GET', 'POST'])
@@ -156,6 +159,7 @@ def search():
         global c
         c=data['Category']
         k=data['Keyword']
+        search = [] 
         search = excel_controller.excel_search(data)
         return jsonify(search)
 
@@ -206,7 +210,43 @@ def modify():
 #         print(gpt['question'])
 #         print(gpt['solution'])
 #         return render_template('next.html',gpt = gpt)
+@app.route("/topic_2",methods=['GET', 'POST'])
+def prompt_build_1():
+    
+    cols = ['Category','Keywords','Problem_Description','Solution','Hint','Prompt','IAO']
+    df = pd.read_csv('staticFiles/uploads/old_problem_db_1.csv',encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str,'Hint':str,'Prompt':str,'IAO':str})
+    # for index,row in df.iterrows():
+    #     problem_dao.problems_set.append(row)
+    # print(problem_dao.problems_set)
+    df_n = df.to_json(orient='index')
+    problem_dict = json.loads(df_n)
+    categorys = set()
+    keywords = set()
+    for problem in problem_dict:
+        categorys.add(problem_dict[problem]['Category'])
+        t = problem_dict[problem]['Keywords']
+        tarray = t.split(',')
+        for i,keyword in enumerate(tarray):
+            keywords.add(keyword)
 
+    return render_template('topic_2.html',problems=df_n,categorys = categorys,keywords = keywords)
+
+@app.route("/topic_2_extend",methods=['GET', 'POST'])
+def prompt_build_extend_1():
+    cols = ['Category','Keywords','Problem_Description','Solution','Hint','Prompt','IAO']
+    df = pd.read_csv('staticFiles/uploads/old_problem_db_1.csv',encoding='utf-8',usecols=cols,dtype={'Category':str,'Keywords':str,'Problem_Description':str,'Solution':str,'Hint':str,'Prompt':str,'IAO':str})
+    df_n = df.to_json(orient='index')
+    problem_dict = json.loads(df_n)
+    categorys = set()
+    keywords = set()
+    for problem in problem_dict:
+        categorys.add(problem_dict[problem]['Category'])
+        t = problem_dict[problem]['Keywords']
+        tarray = t.split(',')
+        for i,keyword in enumerate(tarray):
+            keywords.add(keyword)
+
+    return render_template('topic_2_e.html',problems=df_n,categorys = categorys,keywords = keywords)
 if __name__ == "__main__":
 
     app.run()

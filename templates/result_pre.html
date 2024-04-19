@@ -17,7 +17,11 @@
                     </textarea>
                 </div>
                 {% if mode == 1 %}
-                <input class="button-33" id= "next" style="background-color:	#00BB00;" value="Next Level" onclick="window.location.href='/topic_1_extend '">
+                    {% if topic == 2 %}
+                        <input class="button-33" id= "next" style="background-color:	#00BB00;" value="Next Level" onclick="window.location.href='/topic_2_extend '">
+                    {% elif topic == 1 %}
+                        <input class="button-33" id= "next" style="background-color:	#00BB00;" value="Next Level" onclick="window.location.href='/topic_1_extend '">
+                    {% endif %}
                 {% else %}
                 <div id = "final">
                     <input class="button-33" id= "complete" style="background-color:	#00BB00;" value="Complete" onclick="window.location.href='/select '">

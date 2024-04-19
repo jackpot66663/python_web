@@ -53,6 +53,8 @@ def prompt_message(data):
 
 delimiter = "####"
 
+# "relation":<the comparison between new question and old question>,
+# "instruction": <generate steps explanation array of the code_solution>
 system_message = f"""
     You are a teaching assistant.\
     You will be provided with user question json. \
@@ -60,8 +62,6 @@ system_message = f"""
     {delimiter} characters.
     Output a python json, where json has the following format:
     "code_solution":<the code answer of the new question>,
-    "relation":<the comparison between new question and old question>,
-    "instruction": <generate steps explanation array of the code_solution>
     
     The following rules you must to follow:
     1.New question description can be found in user_message["new_question"].

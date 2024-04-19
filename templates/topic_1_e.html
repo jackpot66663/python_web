@@ -63,7 +63,7 @@
                     <fieldset>
                         <legend>處理方式轉換程式概念</legend>
                         {% for keyword in keywords %}
-                            <input type="radio" name="promptk" value="{{keyword}}"></input>
+                            <input type="checkbox" name="promptk" value="{{keyword}}"></input>
                             <label for="{{keyword}}">{{keyword}}</label>
                         {% endfor %}
                     </fieldset>
@@ -85,7 +85,7 @@
                 </div>
                 <div name="prompt-content">
                     <h3 style="text-align: center;">處理方式:<span id="g"></span></h3>
-                    <h3 style="text-align: center;">概念轉換成程式碼為:<span id="k"></span></h3>
+                    <h3 style="text-align: center;">處理方式轉換程式概念:<span id="k"></span></h3>
                 </div>
                 <hr>
                 <div name="prompt-content">
@@ -103,9 +103,9 @@
    var output=""
    var input = ""
    var category = ""
-   var keyword = ""
-   var description = []
-   var solution = []
+   var keyword = []
+   var description = ""
+   var solution = ""
    var hint = ""
    var sample_i
    var sample_o
@@ -128,8 +128,8 @@
    $('input[type=radio][name="promptc"]').on('change', function() {
         category = $(this).val()
    })
-   $('input[type=radio][name="promptk"]').on('change', function() {
-        keyword = $(this).val()
+   $('input[type=checkbox][name="promptk"]:checked').each(function(){
+        keyword+=this.value
    })
 
    var add_div=1;
@@ -152,12 +152,23 @@
         var obj = document.getElementById(id)
         document.getElementById('m_c').removeChild(obj)
    }
-
+   var display = ""
    $('#btnpopclose').click(function(){
+        keyword = []
+        category = ""
+        display = ""
+        $('input[type=checkbox][name="promptk"]').prop("checked",false)
+        $('input[type=radio][name="pro mptc"]').prop("checked",false)
+        $('#g').html(category)
+        $('#k').html(keyword)
+        $('#old').html(display)
         $('#target-content').hide();
    })
    //點選完進行索引
    $('#search').click(function(){
+        $('input[type=checkbox][name="promptk"]:checked').each(function(){
+                    keyword.push(this.value)
+        })
         var search_case = {
             
             Category:category,
@@ -176,21 +187,16 @@
                     $('#g').html(category)
                     $('#k').html(keyword)
                     // console.log(result)
-                    var display = ""
-                    result.forEach(element => {
-                        // console.log(element)
-                        var t1 = "<h4 style=\"text-align:center\">"+element[2]+"</h4>"
-                        t1 = t1.replace(/\n/g,'<br>')
-                        description += element[2]
-                        var t2 = "<h4 style=\"text-align:center\">"+element[3]+"</h4>"
-                        t2 = t2.replace(/\n/g,'<br>')
-                        solution += element[3]
-                        display+=t1
-                        display+="<br>"
-                        display+=t2
-                        // console.log(display)
-                        
-                    });
+                    
+                    var t1 = "<h4 style=\"text-align:center\">"+result['description']+"</h4>"
+                    t1 = t1.replace(/\n/g,'<br>')
+                    description += result['description']
+                    var t2 = "<h4 style=\"text-align:center\">"+result['solution']+"</h4>"
+                    t2 = t2.replace(/\n/g,'<br>')
+                    solution += result['solution']
+                    display+=t1
+                    display+="<br>"
+                    display+=t2
                     $('#old').html(display)
                     $('#target-content').show()
                 }
@@ -199,10 +205,32 @@
    })
    //
    //將索引產出之舊問題整理
-   
+   function check_category(category){
+        if (category=="分支"){
+            return true
+        }else{
+            return false
+        }
+   }
+
+   function check_keyword(keyword){
+        check_1 = ['if_else']
+
+        if (keyword.length!==1){
+            return false;
+        }
+
+        for (var i = 0; i < keyword.length; ++i) {
+            if (keyword[i] !== check_1[i]) {
+                return false
+            }
+        }
+
+        return true
+   }
    //送出
    $('input[type=submit]').click(function(){
-    input = document.getElementById('input_define').value
+            input = document.getElementById('input_define').value
             output = document.getElementById('output_define').value
             sample_i = document.getElementById('s_i').value
             sample_o = document.getElementById('s_o').value
@@ -221,6 +249,7 @@
 
             var choice={
                         Mode:2,
+                        Topic:1,
                         Input:input,
                         Output:output,
                         S_input:sample_i,
@@ -233,17 +262,26 @@
                         Solution:solution,
                         Hint:hint,
             }
-            
-            $.ajax({
-                type:"POST",
-                url:"/result",
-                data:JSON.stringify(choice),
-                contentType:"application/json",
-                dataType:'json',
-                success:function(result){
-                    window.location.href = "/result"
+            if (check_category(category) &&  check_keyword(keyword)){
+                $.ajax({
+                    type:"POST",
+                    url:"/result",
+                    data:JSON.stringify(choice),
+                    contentType:"application/json",
+                    dataType:'json',
+                    success:function(result){
+                        window.location.href = "/result"
+                    }
+                })
+            }else{
+                if (!check_category(category)){
+                    alert("主要處理方式選擇有誤，請重新選擇")
                 }
-            })
+                
+                if (!check_keyword(keyword)){
+                    alert("程式概念選擇有誤，請重新選擇")
+                }
+            }
     });
 
 </script>

@@ -56,7 +56,7 @@ print(practice(a))",,,"範例輸入:
 100
 
 "
-迴圈,for,"請找出串列中連續出現三次的整數。
+迴圈,"for,if_else","請找出串列中連續出現三次的整數。
 其中，串列長度≥3","def find_consecutive(lst):
     ans = []
     count = 1
