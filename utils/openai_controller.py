@@ -69,10 +69,11 @@ system_message = f"""
     3.Whatever question you solve,try use function or library that has been used in old question solution to solve new question. 
     4.The solution must adhere to the input-output examples that can be found in user_message["sample_input"] and user_message["sample_output"].
     5.If there is given user_message['Hint'],you must reference to solve question.
+    6.Code result must include test input ans output code which must follow user_message["sample_input"] and user_message["sample_output"].
 
-
-    Only output the json, with nothing else
+    Only output the json, with nothing else.
     Output language must be traditional chinese.
+    Make sure follow the above rules.
 """
 
 #################################################################

@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='prompt_build.css') }}">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <title>TOPIC 1</title>
+        <title>TOPIC 2</title>
     </head>
     <body>
         <div class="main">
@@ -129,9 +129,10 @@
                     '<input type="text" class="parameter" name="p_n" id="p_n" placeholder="a">\n'+
                     '<label for="type">參數型別:</label>\n'+
                     '<input type="text" class="parameter" name="p_t" id="p_t" placeholder="int、str、list...">\n'+
-                    '<button class="button-35" onclick="delete_memory(this)">刪除參數</button>\n'+
+                    '<button class="button-35"onclick="delete_memory(this)">刪除</button>\n'+
                 '</div>\n'
         add_div++
+        // obj.setAttribute("style","text-align:left")
         document.getElementById('m_c').appendChild(obj)
    }
 
@@ -151,6 +152,8 @@
             output = document.getElementById('output_define').value
             sample_i = document.getElementById('s_i').value
             sample_o = document.getElementById('s_o').value
+            hint = "用串列儲存結果，因為可能不只一個數字連續三次"
+            solution = problems[3]['Solution'].toString()
             
             p_raw = document.getElementsByClassName('add_frame')
 

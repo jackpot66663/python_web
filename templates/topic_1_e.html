@@ -71,7 +71,7 @@
                 <div class ="hint">
                     <fieldset>
                         <legend>關鍵提示</legend>
-                        <input type="text" id="hint" placeholder="">
+                        <input type="text" id="hint" placeholder="如果....，則......">
                     </fieldset>
                 </div>
                 <!-- <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search"> -->
@@ -158,7 +158,7 @@
         category = ""
         display = ""
         $('input[type=checkbox][name="promptk"]').prop("checked",false)
-        $('input[type=radio][name="pro mptc"]').prop("checked",false)
+        $('input[type=radio][name="promptc"]').prop("checked",false)
         $('#g').html(category)
         $('#k').html(keyword)
         $('#old').html(display)
@@ -234,6 +234,7 @@
             output = document.getElementById('output_define').value
             sample_i = document.getElementById('s_i').value
             sample_o = document.getElementById('s_o').value
+            hint = document.getElementById('hint').value
             
             p_raw = document.getElementsByClassName('add_frame')
             
@@ -270,6 +271,15 @@
                     contentType:"application/json",
                     dataType:'json',
                     success:function(result){
+                        keyword = []
+                        category = ""
+                        display = ""
+                        $('input[type=checkbox][name="promptk"]').prop("checked",false)
+                        $('input[type=radio][name="promptc"]').prop("checked",false)
+                        $('#g').html(category)
+                        $('#k').html(keyword)
+                        $('#old').html(display)
+                        $('#target-content').hide();
                         window.location.href = "/result"
                     }
                 })

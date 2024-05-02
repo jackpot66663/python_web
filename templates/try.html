@@ -29,7 +29,10 @@
                             <p id="p"></p>
                         </label></div>
                         <div><label for="name">處理方式:<br>
-                            {{prompt.Category}}{{prompt.Keyword}}
+                            {{prompt.Category}}
+                        </label></div>
+                        <div><label for="name">關鍵提示:<br>
+                            {{prompt.Hint}}
                         </label></div>
                         <div><label for="name">舊問題:<br>
                             <p id="o"></p>
@@ -47,6 +50,7 @@
         <input type="hidden" name="token_idx" id="s_i" value='{{prompt.Solution}}'>
         <input type="hidden" name="token_idx" id="o_i" value='{{prompt.Problem_o}}'>
         <input type="hidden" name="token_idx" id="p_i" value='{{prompt.Parameters}}'>
+        <!-- <input type="hidden" name="token_idx" id="h_i" value='{{prompt.Hint}}'> -->
     </body>
 
 </html>
@@ -55,6 +59,7 @@
     var s = document.getElementById("s_i").value
     var o = document.getElementById("o_i").value
     var p = document.getElementById("p_i").value
+    // var h = document.getElementById("h_i").value
     n = n.replace(/\n/g,'<br>')
     s = s.replace(/\n/g,'<br>')
     o = o.replace(/\n/g,'<br>')
@@ -64,5 +69,6 @@
         document.getElementById("s").innerHTML = s
         document.getElementById("o").innerHTML = o
         document.getElementById("p").innerHTML = p
+        // document.getElementById("h").innerHTML = h
     });
 </script>

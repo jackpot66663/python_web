@@ -15,9 +15,9 @@ def excel_search(data):
         keyword_s += keywords[i]
         if i != len(keywords)-1:
             keyword_s+=","
-            
-    print(category)
-    print(keyword_s)
+
+    # print(category)
+    # print(keyword_s)
     wb = load_workbook('staticFiles/uploads/old_problem_db_1.xlsx')
     ws = wb.active
     for row in ws.rows:

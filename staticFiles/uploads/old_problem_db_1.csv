@@ -1,15 +1,10 @@
 ﻿Category,Keywords,Problem_Description,Solution,Hint,Prompt,IAO
-遞迴,fibonacci,"知名的費波那契數列(Fibonacci Numbers)是指在一串數字中每一項皆為前兩項的和的數列，定義為 :
+遞迴,recursion,"知名的費波那契數列(Fibonacci Numbers)是指在一串數字中每一項皆為前兩項的和的數列，定義為 :
 F_0=0
 F_1=1
 F_n=F_(n-1)+F_(n-2)   (n≥2)
 其中F_n指的是數列中的第n項。
 由此可得一數列: 0,1,1,2,3,5,8,13,...。請寫出能計算出該數列在某項值的程式。
-
-範例輸入:
-5
-範例輸出:
-5
 ","def fib(n):
     if n < 1:
         return 0
@@ -18,10 +13,10 @@ F_n=F_(n-1)+F_(n-2)   (n≥2)
     else:
         return fib(n - 1) + fib(n - 2)
 
-print(fib(int(input())))",,,"輸入: 
-整數，單行輸入，代表該整數位於費波那契數列之第N項
-輸出:
-印出指定整數結果
+print(fib(int(input())))",,,"範例輸入:
+5
+範例輸出:
+5
 "
 函示庫應用,numpy,"Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:
 1. 接收一個數字N1、並利用產生出1~N1的ndarray(A1)，例如N1為5，便會得到[1 2 3 4]的ndarray。
