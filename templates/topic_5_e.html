@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='prompt_build.css') }}">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <title>TOPIC 3 EXTEND</title>
+        <title>TOPIC 5 EXTEND</title>
     </head>
     <body>
         <div class="main">
@@ -20,7 +20,7 @@
                 <div class ="c_input">
                     <fieldset>
                         <legend>輸入</legend>
-                        <input type="text"id="input_define" name="prompti" placeholder="整數，單行輸入，代表數字" required>
+                        <input type="text"id="input_define" name="prompti" placeholder="" required>
                         <p>型別種類:(多)整數、字串、(二維)串列、浮點數、字典...</p>
                         <p>輸入格式:單行輸入、多行輸入</p>
                         <p>輸入意涵:代表月數、天數、第n項費伯數列...</p>
@@ -29,7 +29,7 @@
                 <div class ="c_output">
                     <fieldset>
                         <legend>輸出</legend>
-                        <input type="text" id="output_define" name="prompto" placeholder="印出指定整數結果" required>
+                        <input type="text" id="output_define" name="prompto" placeholder="" required>
                         <p>輸出結果:印出指定 整數/字串/串列 結果</p>
                     </fieldset>
                 </div>
@@ -70,8 +70,8 @@
                 </div>
                 <div class ="hint">
                     <fieldset>
-                        <legend>關鍵提示(思考最小情況)</legend>
-                        <input type="text" id="hint" placeholder="當n=0時回傳0、當n=1時回傳1、n=2時回傳...、n=3時回傳...、">
+                        <legend>關鍵提示</legend>
+                        <input type="text" id="hint" placeholder="">
                     </fieldset>
                 </div>
                 <!-- <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search"> -->
@@ -112,12 +112,18 @@
    var parameters = []
 
    
-   var extend = "當兵新訓一個月後要下部隊抽籤，班長從籤袋中一次拿三或二或一支籤分派單位\n"+
-                "假設n為籤袋中的總籤數，請問當輸入為n時，班長抽完籤的方法數共有幾種。"
-   var iao   =  "範例輸入:\n"+
-                "4\n"+
-                "範例輸出:\n"+
-                "7"
+   var extend="處理一多維資料如下，輸入N、M、L，請利用工具按照以下流程輸出運算結果:\n"+
+                "1.利用輸入N，產生出1~N-1的ndarray\n"+
+                "2.利用輸入M、L，將此ndarray轉成M×L之格式之A1矩陣\n"+
+                "3.利用輸入M、L，將此ndarray轉成L×M之格式之A2矩陣\n"+
+                "4.將A1與A2相乘得A3矩陣\n"+
+                "5.將A3轉成1×Row的格式。(如原本是2x2，便需轉換成1x4)\n"+
+                "6.輸出A3"
+            
+   var iao="範例輸入:\n"+
+            "9 2 4\n"+ 
+            "範例輸出:\n"+
+            "[[ 50  60 114 140]]"
    iao = iao.replace(/\n/g,'<br>')
    extend = extend.replace(/\n/g,'<br>')
    
@@ -207,7 +213,7 @@
    //
    //將索引產出之舊問題整理
    function check_category(category){
-        if (category=="遞迴"){
+        if (category=="函式庫應用"){
             return true
         }else{
             return false
@@ -215,7 +221,7 @@
    }
 
    function check_keyword(keyword){
-        check_1 = ['recursion']
+        check_1 = ['numpy']
 
         if (keyword.length!==1){
             return false;
@@ -251,7 +257,7 @@
 
             var choice={
                         Mode:2,
-                        Topic:3,
+                        Topic:5,
                         Input:input,
                         Output:output,
                         S_input:sample_i,

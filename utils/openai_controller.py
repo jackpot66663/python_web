@@ -53,8 +53,14 @@ def prompt_message(data):
 
 delimiter = "####"
 
-# "relation":<the comparison between new question and old question>,
-# "instruction": <generate steps explanation array of the code_solution>
+# The following rules you must to follow:
+#     1.New question description can be found in user_message["new_question"].
+#     2.The new problem must be solved according to the given user_message["process"] way,also the parameter declaration must use the given user_message['parameter_declaration'] if given.
+#     3.Whatever question you solve,try use function or library that has been used in old question solution to solve new question. 
+#     4.The solution must adhere to the input-output examples that can be found in user_message["sample_input"] and user_message["sample_output"].
+#     5.If there is given user_message['Hint'],you must reference to solve question.
+#     6.Code result must include test input ans output code which must follow user_message["sample_input"] and user_message["sample_output"].
+#     7.test input must use user_message["sample_input"]
 system_message = f"""
     You are a teaching assistant.\
     You will be provided with user question json. \
@@ -63,14 +69,6 @@ system_message = f"""
     Output a python json, where json has the following format:
     "code_solution":<the code answer of the new question>,
     
-    The following rules you must to follow:
-    1.New question description can be found in user_message["new_question"].
-    2.The new problem must be solved according to the given user_message["process"] way,also the parameter declaration must use the given user_message['parameter_declaration'] if given.
-    3.Whatever question you solve,try use function or library that has been used in old question solution to solve new question. 
-    4.The solution must adhere to the input-output examples that can be found in user_message["sample_input"] and user_message["sample_output"].
-    5.If there is given user_message['Hint'],you must reference to solve question.
-    6.Code result must include test input ans output code which must follow user_message["sample_input"] and user_message["sample_output"].
-
     Only output the json, with nothing else.
     Output language must be traditional chinese.
     Make sure follow the above rules.

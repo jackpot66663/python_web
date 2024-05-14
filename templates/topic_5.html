@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='prompt_build.css') }}">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <title>TOPIC 3</title>
+        <title>TOPIC 5</title>
     </head>
     <body>
         <div class="main">
@@ -70,7 +70,7 @@
                 </div>
                 <div class ="hint">
                     <fieldset>
-                        <legend>關鍵提示(思考最小情況)</legend>
+                        <legend>關鍵提示</legend>
                         <input type="text" id="hint" placeholder="">
                     </fieldset>
                 </div>
@@ -102,10 +102,10 @@
    var sample_o
    var parameters = []
 
-   var basic = problems[0]['Problem_Description']
+   var basic = problems[1]['Problem_Description']
    basic = basic.replace(/\n/g,'<br>')
 
-   var iao = problems[0]['IAO']
+   var iao = problems[1]['IAO']
    iao = iao.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
@@ -169,7 +169,7 @@
 
             var choice={
                         Mode:1,
-                        Topic:3,
+                        Topic:5,
                         Input:input,
                         Output:output,
                         S_input:sample_i,

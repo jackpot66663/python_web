@@ -18,25 +18,14 @@ print(fib(int(input())))",,,"範例輸入:
 範例輸出:
 5
 "
-函示庫應用,numpy,"Numpy為針對高維度資料(陣列、矩陣)運算的函式庫，請利用此函式庫按照以下流程執行並輸出運算結果:
-1. 接收一個數字N1、並利用產生出1~N1的ndarray(A1)，例如N1為5，便會得到[1 2 3 4]的ndarray。
-2. 接收一個數字N2、並利用產生出1~N2的ndarray(A2)，例如N2為5，便會得到[1 2 3 4的ndarray。
-3. 將A1轉成M×L之格式
-4. 將A2轉成L×K之格式
-5. 將A1及A2按照矩陣相乘成ndarray(A3)(dtype須為int) ","from numpy import arange
-para = list(map(int, input().split()))
-a1 = arange(1, para[0])
-a2 = arange(1, para[1])
-a1 = a1.reshape(para[2], para[3])
-a2 = a2.reshape(para[3], para[4])
-a3 = a1.dot(a2)
+函式庫應用,numpy,"輸入N，請生成出1~N-1之陣列
+","import numpy as np
 
-print(a3)
-",,,"輸入 :
-每個輸入依空格區隔分別依序為: N1、N2、M、L、K，
-其中N1、N2與矩陣內容相關，M、L、K與矩陣形狀相關。
+n = int(input())
+print(np.arange(1,n))",,,"輸入 :
+5
 輸出 :
-由兩矩陣相乘後得出的矩陣。
+[1 2 3 4]
 "
 分支,if_else,有一變數a，當輸入a > 0時輸出100，其他則輸出a,"def practice()
  if a>0:
@@ -73,7 +62,7 @@ print(result)",,,"範例輸入:
 1,3,5,5,7,7,7
 範例輸出:
 [7]"
-函示庫應用,tkinter,"請用python設計規格如下之GUI介面
+函式庫應用,tkinter,"請用python設計規格如下之GUI介面
 1. 視窗長寬為250px*150px
 2. 標題(Title)為”Window” 
 3. 視窗中顯示文字”Hello!”
@@ -90,3 +79,20 @@ app = MyApp(master=root)
 app.mainloop()
 ",,,"輸出:
 輸出指定規格之GUI介面"
+函式應用,for,"一成績數列[60,52,40,80,79,94]，請利用函式幫忙助教計算平均成績和變異數。
+分數區間:0 ≤ 分數 ≤100
+小數點輸出至第二位
+
+","def calculate_avg_and_variance(scores):
+    avg = sum(scores) / len(scores)
+    variance = sum((xi - avg) ** 2 for xi in scores) / len(scores)
+    return round(avg, 2), round(variance, 2)
+
+# Test Input
+scores = [60,52,40,80,79,94]
+print(calculate_avg_and_variance(scores))
+
+",,,"範例輸入:
+60,52,40,80,79,94
+範例輸出:
+(67.5 340.58)"

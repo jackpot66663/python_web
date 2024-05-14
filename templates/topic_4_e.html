@@ -3,7 +3,7 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='prompt_build.css') }}">
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-        <title>TOPIC 3</title>
+        <title>TOPIC 4 EXTEND</title>
     </head>
     <body>
         <div class="main">
@@ -20,7 +20,7 @@
                 <div class ="c_input">
                     <fieldset>
                         <legend>輸入</legend>
-                        <input type="text"id="input_define" name="prompti" placeholder="整數，單行輸入，代表數字" required>
+                        <input type="text"id="input_define" name="prompti" placeholder="" required>
                         <p>型別種類:(多)整數、字串、(二維)串列、浮點數、字典...</p>
                         <p>輸入格式:單行輸入、多行輸入</p>
                         <p>輸入意涵:代表月數、天數、第n項費伯數列...</p>
@@ -29,7 +29,7 @@
                 <div class ="c_output">
                     <fieldset>
                         <legend>輸出</legend>
-                        <input type="text" id="output_define" name="prompto" placeholder="印出指定整數結果" required>
+                        <input type="text" id="output_define" name="prompto" placeholder="" required>
                         <p>輸出結果:印出指定 整數/字串/串列 結果</p>
                     </fieldset>
                 </div>
@@ -52,7 +52,7 @@
                 </div>
                 <div class="c_category">
                     <fieldset>
-                        <legend>主要處理方式</legend>
+                        <legend>處理方式</legend>
                         {% for category in categorys %}
                             <input type="radio" name="promptc" value="{{category}}"></input>
                             <label for="{{category}}">{{category}}</label>
@@ -61,7 +61,7 @@
                 </div>
                 <div class="c_keyword">
                     <fieldset>
-                        <legend>應用到的程式概念(複選)</legend>
+                        <legend>處理方式轉換程式概念</legend>
                         {% for keyword in keywords %}
                             <input type="checkbox" name="promptk" value="{{keyword}}"></input>
                             <label for="{{keyword}}">{{keyword}}</label>
@@ -70,21 +70,30 @@
                 </div>
                 <div class ="hint">
                     <fieldset>
-                        <legend>關鍵提示(思考最小情況)</legend>
+                        <legend>關鍵提示</legend>
                         <input type="text" id="hint" placeholder="">
                     </fieldset>
                 </div>
                 <!-- <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search"> -->
-                <input class="button-33" type="submit" value="Ask AI">
+                <!-- <input class="button-33" type="submit" value="Ask AI"> -->
+                <input class="button-33" id= "search" style="background-color:	#00BB00;" value="Search">
             </div>
-            
-            <!-- <div class="add_frame">
-                <label for="name">參數名稱:</label>
-                <input type="text" class="parameter" name="p_n" placeholder="a">
-                <label for="type">參數型別:</label>
-                <input type="text" class="parameter" name="p_t" placeholder="int、str、list">
-                <button class="button-34" style="background-color:#EA0000"onclick="delete_memory()">刪除參數</button>
-            </div> -->
+            <div id="target-content">
+                <div class="popup-header">
+                    <span style="font-weight:bold">Check Search Result: </span>
+                    <button id="btnpopclose" class="popup-close">×</button>
+                </div>
+                <div name="prompt-content">
+                    <h3 style="text-align: center;">處理方式:<span id="g"></span></h3>
+                    <h3 style="text-align: center;">處理方式轉換程式概念:<span id="k"></span></h3>
+                </div>
+                <hr>
+                <div name="prompt-content">
+                    <h3 style="text-align: center;">相關範例題目搜尋結果</h3>
+                    <div id="old"></div>
+                </div>
+                <input class="button-33" style="top:50%;left:50%;bottom: 20px;;" type="submit" value="Ask AI">
+            </div>
         </div>
     </body>
 </html>
@@ -102,21 +111,24 @@
    var sample_o
    var parameters = []
 
-   var basic = problems[0]['Problem_Description']
-   basic = basic.replace(/\n/g,'<br>')
-
-   var iao = problems[0]['IAO']
+   
+   var extend = "給定一個整數列表，將每個元素替換為與其鄰居的平均值，如果元素位於開始或結束的位置，其平均值就是與單一鄰居的平均值。"
+   var iao   =  "範例輸入:\n"+
+                "20,30,40,60,20,30\n"+
+                "範例輸出:\n"+
+                "[25, 30, 43, 40, 37, 25]"
    iao = iao.replace(/\n/g,'<br>')
+   extend = extend.replace(/\n/g,'<br>')
    
    $(document).ready(function () {
-        document.getElementById("problem_d").innerHTML = basic
+        document.getElementById("problem_d").innerHTML = extend
         document.getElementById("problem_iao").innerHTML = iao
    });
    $('input[type=radio][name="promptc"]').on('change', function() {
         category = $(this).val()
    })
-   $('input[type=radio][name="promptk"]').on('change', function() {
-        keyword = $(this).val()
+   $('input[type=checkbox][name="promptk"]:checked').each(function(){
+        keyword+=this.value
    })
 
    var add_div=1;
@@ -125,7 +137,7 @@
         obj.id = "add_"+add_div
         obj.innerHTML='<div class="add_frame">\n'+
                     '<label for="name">參數名稱:</label>\n'+
-                    '<input type="text" class="parameter" name="p_n" id="p_n" placeholder="a">\n'+
+                    '<input type="text" class="parameter" name="p_n" id="p_n" placeholder="n">\n'+
                     '<label for="type">參數型別:</label>\n'+
                     '<input type="text" class="parameter" name="p_t" id="p_t" placeholder="int、str、list...">\n'+
                     '<button class="button-35" onclick="delete_memory(this)">刪除</button>\n'+
@@ -140,11 +152,82 @@
         var obj = document.getElementById(id)
         document.getElementById('m_c').removeChild(obj)
    }
+   var display = ""
+   $('#btnpopclose').click(function(){
+        keyword = []
+        category = ""
+        display = ""
+        $('input[type=checkbox][name="promptk"]').prop("checked",false)
+        $('input[type=radio][name="promptc"]').prop("checked",false)
+        $('#g').html(category)
+        $('#k').html(keyword)
+        $('#old').html(display)
+        $('#target-content').hide();
+   })
+   //點選完進行索引
+   $('#search').click(function(){
+        $('input[type=checkbox][name="promptk"]:checked').each(function(){
+                    keyword.push(this.value)
+        })
+        var search_case = {
+            
+            Category:category,
+            Keyword:keyword,
+        }
+        // console.log(prompt)
 
-//    $('#btnpopclose').click(function(){
-//         $('#target-content').hide();
-//    })
-   
+        //ajax開始
+        $.ajax({
+                type:"POST",
+                url:"/search",
+                data:JSON.stringify(search_case),
+                contentType:"application/json",
+                dataType:'json',
+                success:function(result){
+                    $('#g').html(category)
+                    $('#k').html(keyword)
+                    // console.log(result)
+                    
+                    var t1 = "<h4 style=\"text-align:center\">"+result['description']+"</h4>"
+                    t1 = t1.replace(/\n/g,'<br>')
+                    description += result['description']
+                    var t2 = "<h4 style=\"text-align:center\">"+result['solution']+"</h4>"
+                    t2 = t2.replace(/\n/g,'<br>')
+                    solution += result['solution']
+                    display+=t1
+                    display+="<br>"
+                    display+=t2
+                    $('#old').html(display)
+                    $('#target-content').show()
+                }
+        })
+        
+   })
+   //
+   //將索引產出之舊問題整理
+   function check_category(category){
+        if (category=="函式應用"){
+            return true
+        }else{
+            return false
+        }
+   }
+
+   function check_keyword(keyword){
+        check_1 = ['for']
+
+        if (keyword.length!==1){
+            return false;
+        }
+
+        for (var i = 0; i < keyword.length; ++i) {
+            if (keyword[i] !== check_1[i]) {
+                return false
+            }
+        }
+
+        return true
+   }
    //送出
    $('input[type=submit]').click(function(){
             input = document.getElementById('input_define').value
@@ -152,6 +235,7 @@
             sample_i = document.getElementById('s_i').value
             sample_o = document.getElementById('s_o').value
             hint = document.getElementById('hint').value
+            
             p_raw = document.getElementsByClassName('add_frame')
             
             for(var i =0;i<p_raw.length;i++){
@@ -163,13 +247,10 @@
                 }
                 parameters.push(temp)
             }
-            $('input[type=checkbox][name="promptk"]:checked').each(function(){
-                    keyword.push(this.value)
-            })
 
             var choice={
-                        Mode:1,
-                        Topic:3,
+                        Mode:2,
+                        Topic:4,
                         Input:input,
                         Output:output,
                         S_input:sample_i,
@@ -177,22 +258,40 @@
                         Category:category,
                         Keyword:keyword,
                         Parameters:parameters,
-                        Problem_n:basic.toString(),
+                        Problem_n:extend.toString(),
                         Problem_o:description,
                         Solution:solution,
                         Hint:hint,
             }
-            // console.log(choice)
-            $.ajax({
-                type:"POST",
-                url:"/result",
-                data:JSON.stringify(choice),
-                contentType:"application/json",
-                dataType:'json',
-                success:function(result){
-                    window.location.href = "/result"
+            if (check_category(category) &&  check_keyword(keyword)){
+                $.ajax({
+                    type:"POST",
+                    url:"/result",
+                    data:JSON.stringify(choice),
+                    contentType:"application/json",
+                    dataType:'json',
+                    success:function(result){
+                        keyword = []
+                        category = ""
+                        display = ""
+                        $('input[type=checkbox][name="promptk"]').prop("checked",false)
+                        $('input[type=radio][name="promptc"]').prop("checked",false)
+                        $('#g').html(category)
+                        $('#k').html(keyword)
+                        $('#old').html(display)
+                        $('#target-content').hide();
+                        window.location.href = "/result"
+                    }
+                })
+            }else{
+                if (!check_category(category)){
+                    alert("主要處理方式選擇有誤，請重新選擇")
                 }
-            })
+                
+                if (!check_keyword(keyword)){
+                    alert("程式概念選擇有誤，請重新選擇")
+                }
+            }
     });
 
 </script>
