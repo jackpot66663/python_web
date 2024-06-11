@@ -133,6 +133,7 @@ topic = 0
 def result():
     if request.method=="POST":
         data = request.get_json()
+        print(data)
         global mode
         mode= data['Mode']
         global problem

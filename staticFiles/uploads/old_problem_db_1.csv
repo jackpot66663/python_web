@@ -1,4 +1,4 @@
-﻿Category,Keywords,Problem_Description,Solution,Hint,Prompt,IAO
+Category,Keywords,Problem_Description,Solution,Hint,Prompt,IAO
 遞迴,recursion,"知名的費波那契數列(Fibonacci Numbers)是指在一串數字中每一項皆為前兩項的和的數列，定義為 :
 F_0=0
 F_1=1

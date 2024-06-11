@@ -16,7 +16,7 @@
             </div>
 
             <div class="flex-child">
-                <h1>Prompt Production</h1>
+                <h1>Module Production</h1>
                 <div class ="c_input">
                     <fieldset>
                         <legend>輸入</legend>
@@ -114,9 +114,9 @@
    
    var extend = "給定一個整數列表，將每個元素替換為與其鄰居的平均值，如果元素位於開始或結束的位置，其平均值就是與單一鄰居的平均值。"
    var iao   =  "範例輸入:\n"+
-                "20,30,40,60,20,30\n"+
+                "30,30,30,60,30,30\n"+
                 "範例輸出:\n"+
-                "[25, 30, 43, 40, 37, 25]"
+                "[30, 30, 40, 40, 40, 30]"
    iao = iao.replace(/\n/g,'<br>')
    extend = extend.replace(/\n/g,'<br>')
    
@@ -234,7 +234,7 @@
             output = document.getElementById('output_define').value
             sample_i = document.getElementById('s_i').value
             sample_o = document.getElementById('s_o').value
-            hint = document.getElementById('hint').value
+            hint = "首值需與下一值鄰居加總除2平均，首值需與上一值加總除2平均"
             
             p_raw = document.getElementsByClassName('add_frame')
             
